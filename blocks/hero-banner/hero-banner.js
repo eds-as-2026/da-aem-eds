@@ -1,5 +1,3 @@
-import { createOptimizedPicture } from '../../scripts/aem.js';
-
 /**
  * loads and decorates the hero-banner block
  * @param {Element} block The block element
@@ -14,20 +12,30 @@ export default async function decorate(block) {
   const rows = Array.from(block.children);
 
   // Get image - extract from picture element
-  let imagePicture = null;
+  let imageSrc = null;
   let imageAlt = 'Hero banner background';
   
   const firstRow = rows[0];
   if (firstRow) {
-    const pictureElement = firstRow.querySelector('picture');
-    if (pictureElement) {
-      imagePicture = pictureElement;
-      const imgElement = pictureElement.querySelector('img');
-      if (imgElement) {
-        imageAlt = imgElement.alt || imageAlt;
-        // Optimize the picture element
-        imagePicture = createOptimizedPicture(imgElement.src, imgElement.alt, false, [{ width: '1200' }]);
-      }
+    console.log('Hero banner first row:', firstRow.innerHTML);
+    
+    // Try picture element first
+    let pictureElement = firstRow.querySelector('picture');
+    let imgElement = pictureElement?.querySelector('img');
+    
+    // If no picture, try direct img
+    if (!imgElement) {
+      imgElement = firstRow.querySelector('img');
+    }
+    
+    if (imgElement && imgElement.src) {
+      imageSrc = imgElement.src;
+      imageAlt = imgElement.alt || imageAlt;
+      
+      console.log('Hero banner extracted image src:', imageSrc);
+      console.log('Hero banner extracted image alt:', imageAlt);
+    } else {
+      console.warn('Hero banner: No image source found in first row');
     }
   }
 
@@ -53,9 +61,16 @@ export default async function decorate(block) {
   const backgroundDiv = document.createElement('div');
   backgroundDiv.className = 'hero-banner-background';
   
-  // Add the optimized picture element to the background
-  if (imagePicture) {
-    backgroundDiv.appendChild(imagePicture);
+  // Add the image to the background
+  if (imageSrc) {
+    console.log('Creating image element with src:', imageSrc);
+    const img = document.createElement('img');
+    img.src = imageSrc;
+    img.alt = imageAlt;
+    img.loading = 'eager';
+    backgroundDiv.appendChild(img);
+  } else {
+    console.warn('No image available for hero banner');
   }
 
   // Create overlay for text readability
@@ -86,21 +101,9 @@ export default async function decorate(block) {
   // Create button text span
   const buttonTextSpan = document.createElement('span');
   buttonTextSpan.className = 'hero-banner-cta-text';
-  buttonTextSpan.textContent = ctaText;
-
-  // Create arrow icon
-  const arrowIcon = document.createElement('svg');
-  arrowIcon.className = 'hero-banner-cta-icon';
-  arrowIcon.setAttribute('viewBox', '0 0 24 24');
-  arrowIcon.setAttribute('fill', 'currentColor');
-  arrowIcon.setAttribute('aria-hidden', 'true');
-
-  const arrowPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-  arrowPath.setAttribute('d', 'M5 12h14M12 5l7 7-7 7');
-  arrowIcon.appendChild(arrowPath);
+  buttonTextSpan.textContent = ctaText + ' →';
 
   ctaButton.appendChild(buttonTextSpan);
-  ctaButton.appendChild(arrowIcon);
 
   // Assemble the text wrapper
   textWrapper.appendChild(heading);
