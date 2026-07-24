@@ -1,0 +1,170 @@
+/* Hero Video — full-viewport autoplaying background video with bottom-left title + CTA */
+
+/* full-bleed: override EDS section max-width/padding */
+.hero-video-container .hero-video-wrapper {
+  max-width: unset;
+  padding: 0;
+}
+
+.hero-video-container.section {
+  margin: 0;
+  padding: 0;
+}
+
+.hero-video {
+  position: relative;
+  min-height: 100svh;
+  overflow: hidden;
+  color: rgb(255 255 255);
+
+  /* Dark base paints instantly so deferred-loading the video causes no flash
+     and keeps the video off the LCP critical path. */
+  background-color: var(--dark-background-color, rgb(30 30 32));
+}
+
+/* --- background video (row 1) --- */
+.hero-video .hero-video-media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  margin: 0;
+}
+
+.hero-video .hero-video-bg,
+.hero-video .hero-video-media picture,
+.hero-video .hero-video-media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* --- mute/unmute toggle (bottom-right, over the video) --- */
+.hero-video .hero-video-mute {
+  position: absolute;
+  z-index: 2;
+  right: 24px;
+  bottom: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid rgb(255 255 255 / 60%);
+  border-radius: 50%;
+  background: rgb(0 0 0 / 30%);
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.hero-video .hero-video-mute:hover,
+.hero-video .hero-video-mute:focus-visible {
+  border-color: rgb(255 255 255);
+  background: rgb(0 0 0 / 55%);
+}
+
+/* sound-on icon (shown when playing with audio) */
+.hero-video .hero-video-mute::after {
+  content: "";
+  width: 20px;
+  height: 20px;
+  background-color: rgb(255 255 255);
+  mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a9 9 0 0 1 0 14"/></svg>') center / contain no-repeat;
+}
+
+/* muted state — speaker with an X */
+.hero-video .hero-video-mute.is-muted::after {
+  mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="m23 9-6 6"/><path d="m17 9 6 6"/></svg>');
+}
+
+/* --- content overlay (row 2): title + CTA, bottom-left --- */
+.hero-video .hero-video-content {
+  position: absolute;
+  z-index: 1;
+  inset: auto auto 32px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+  max-width: 780px;
+  margin: 0;
+}
+
+.hero-video .hero-video-content > div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+/* source title is a small Inter caption (16px/400), not a large heading */
+.hero-video h1 {
+  margin: 0;
+  color: rgb(255 255 255);
+  font-family: var(--body-font-family);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: 0.16px;
+}
+
+/* CTA wrapper paragraph — no inline spacing */
+.hero-video .hero-video-cta-wrapper {
+  margin: 0;
+}
+
+/* CTA: bordered box, transparent bg, white text, arrow icon.
+   The CTA is a plain <a> (not strong/em) so it never gets .button — the
+   block JS tags it .hero-video-cta instead. */
+.hero-video a.hero-video-cta:any-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 24px;
+  border: 1px solid rgb(244 240 238);
+  border-radius: 0;
+  background: none;
+  padding: 8px 20px;
+  color: rgb(255 255 255);
+  font-family: var(--body-font-family);
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 0.16px;
+  line-height: 1.25;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* arrow icon on the right (↗) */
+.hero-video a.hero-video-cta:any-link::after {
+  content: "";
+  width: 14px;
+  height: 14px;
+  flex: 0 0 auto;
+  background-color: currentcolor;
+  mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H8M17 7V16" stroke="black" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>') no-repeat center / contain;
+}
+
+.hero-video a.hero-video-cta:any-link:hover {
+  background-color: rgb(255 255 255);
+  color: rgb(0 0 0);
+}
+
+@media (width >= 900px) {
+  .hero-video .hero-video-content {
+    inset: auto auto 68px 80px;
+    gap: 44px;
+  }
+
+  .hero-video .hero-video-content > div {
+    gap: 44px;
+  }
+
+  .hero-video .hero-video-mute {
+    right: 80px;
+    bottom: 68px;
+  }
+}
