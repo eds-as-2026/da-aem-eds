@@ -1,20 +1,35 @@
+import { createOptimizedPicture } from '../../scripts/aem.js';
+
 /**
  * loads and decorates the hero-banner block
  * @param {Element} block The block element
  */
 export default async function decorate(block) {
   // Expected structure:
-  // Row 1: image
+  // Row 1: image (picture/img element)
   // Row 2: heading
   // Row 3: description/subheading
   // Row 4: CTA button text
 
   const rows = Array.from(block.children);
 
-  // Get image
-  const imageCell = rows[0]?.querySelector('img');
-  const imageSrc = imageCell?.src;
-  const imageAlt = imageCell?.alt || 'Hero banner background';
+  // Get image - extract from picture element
+  let imagePicture = null;
+  let imageAlt = 'Hero banner background';
+  
+  const firstRow = rows[0];
+  if (firstRow) {
+    const pictureElement = firstRow.querySelector('picture');
+    if (pictureElement) {
+      imagePicture = pictureElement;
+      const imgElement = pictureElement.querySelector('img');
+      if (imgElement) {
+        imageAlt = imgElement.alt || imageAlt;
+        // Optimize the picture element
+        imagePicture = createOptimizedPicture(imgElement.src, imgElement.alt, false, [{ width: '1200' }]);
+      }
+    }
+  }
 
   // Get heading
   const headingText = rows[1]?.textContent?.trim() || '';
@@ -34,10 +49,19 @@ export default async function decorate(block) {
   const heroBannerDiv = document.createElement('div');
   heroBannerDiv.className = 'hero-banner-content';
 
-  // Create background image element
+  // Create background image element wrapper
   const backgroundDiv = document.createElement('div');
   backgroundDiv.className = 'hero-banner-background';
-  backgroundDiv.style.backgroundImage = `url('${imageSrc}')`;
+  
+  // Add the optimized picture element to the background
+  if (imagePicture) {
+    backgroundDiv.appendChild(imagePicture);
+  }
+
+  // Create overlay for text readability
+  const overlay = document.createElement('div');
+  overlay.className = 'hero-banner-overlay';
+  backgroundDiv.appendChild(overlay);
 
   // Create text content wrapper
   const textWrapper = document.createElement('div');

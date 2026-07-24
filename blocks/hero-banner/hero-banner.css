@@ -9,20 +9,29 @@
   grid-template-rows: 1fr;
   min-height: 60vh;
   position: relative;
+  width: 100%;
 }
 
 .hero-banner-background {
   grid-column: 1;
   grid-row: 1;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
   position: relative;
   z-index: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
-.hero-banner-background::after {
-  content: '';
+.hero-banner-background picture,
+.hero-banner-background img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.hero-banner-overlay {
   position: absolute;
   top: 0;
   left: 0;
@@ -30,6 +39,7 @@
   bottom: 0;
   background: linear-gradient(to right, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.2) 40%, transparent 70%);
   z-index: 1;
+  pointer-events: none;
 }
 
 .hero-banner-text {
