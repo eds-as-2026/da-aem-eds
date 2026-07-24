@@ -11,7 +11,7 @@ export default async function decorate(block) {
 
   const rows = Array.from(block.children);
 
-  // Get image - extract from picture element
+  // Get image - extract from picture element or link
   let imageSrc = null;
   let imageAlt = 'Hero banner background';
   
@@ -20,21 +20,26 @@ export default async function decorate(block) {
     console.log('Hero banner first row:', firstRow.innerHTML);
     
     // Try picture element first
-    let pictureElement = firstRow.querySelector('picture');
-    let imgElement = pictureElement?.querySelector('img');
+    let imgElement = firstRow.querySelector('img');
     
-    // If no picture, try direct img
+    // If no img, try to get URL from link
     if (!imgElement) {
-      imgElement = firstRow.querySelector('img');
+      const linkElement = firstRow.querySelector('a');
+      if (linkElement && linkElement.href) {
+        imageSrc = linkElement.href;
+        console.log('Hero banner extracted image from link href:', imageSrc);
+      }
+    } else {
+      // If img exists, get src from it
+      if (imgElement.src) {
+        imageSrc = imgElement.src;
+        imageAlt = imgElement.alt || imageAlt;
+        console.log('Hero banner extracted image src:', imageSrc);
+        console.log('Hero banner extracted image alt:', imageAlt);
+      }
     }
     
-    if (imgElement && imgElement.src) {
-      imageSrc = imgElement.src;
-      imageAlt = imgElement.alt || imageAlt;
-      
-      console.log('Hero banner extracted image src:', imageSrc);
-      console.log('Hero banner extracted image alt:', imageAlt);
-    } else {
+    if (!imageSrc) {
       console.warn('Hero banner: No image source found in first row');
     }
   }
@@ -43,7 +48,25 @@ export default async function decorate(block) {
   const headingText = rows[1]?.textContent?.trim() || '';
 
   // Get description
-  const descriptionText = rows[2]?.textContent?.trim() || '';
+  const descriptionCell = rows[2];
+  let descriptionText = '';
+  
+  if (descriptionCell) {
+    // Get all text content and preserve line breaks
+    const paragraphs = descriptionCell.querySelectorAll('p');
+    if (paragraphs.length > 0) {
+      // Join multiple paragraphs with line breaks
+      descriptionText = Array.from(paragraphs)
+        .map(p => p.textContent.trim())
+        .filter(text => text.length > 0)
+        .join(' ');
+    } else {
+      // Fallback to all text content
+      descriptionText = descriptionCell.textContent.trim();
+    }
+  }
+  
+  console.log('Hero banner description:', descriptionText);
 
   // Get CTA link
   const ctaCell = rows[3]?.querySelector('a');
@@ -68,9 +91,12 @@ export default async function decorate(block) {
     img.src = imageSrc;
     img.alt = imageAlt;
     img.loading = 'eager';
+    img.onload = () => console.log('Hero banner image loaded successfully');
+    img.onerror = (e) => console.error('Hero banner image failed to load:', e);
     backgroundDiv.appendChild(img);
   } else {
     console.warn('No image available for hero banner');
+    console.warn('First row content:', firstRow?.innerHTML);
   }
 
   // Create overlay for text readability
