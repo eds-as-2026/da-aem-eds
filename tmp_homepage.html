@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Home | AEM Boilerplate</title>
+    <link rel="canonical" href="https://localhost:3000/">
+    <meta name="description" content="Use this template repository as the starting point for new AEM projects.">
+    <meta property="og:title" content="Home | AEM Boilerplate">
+    <meta property="og:description" content="Use this template repository as the starting point for new AEM projects.">
+    <meta property="og:url" content="https://localhost:3000/">
+    <meta property="og:image" content="https://localhost:3000/media_17ec1442b1d2b9fa5ae0b2c51d327c022d7a0d6d9.png?width=1200&#x26;format=pjpg&#x26;optimize=medium">
+    <meta property="og:image:secure_url" content="https://localhost:3000/media_17ec1442b1d2b9fa5ae0b2c51d327c022d7a0d6d9.png?width=1200&#x26;format=pjpg&#x26;optimize=medium">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Home | AEM Boilerplate">
+    <meta name="twitter:description" content="Use this template repository as the starting point for new AEM projects.">
+    <meta name="twitter:image" content="https://localhost:3000/media_17ec1442b1d2b9fa5ae0b2c51d327c022d7a0d6d9.png?width=1200&#x26;format=pjpg&#x26;optimize=medium">
+    <meta
+  http-equiv="Content-Security-Policy"
+  content="script-src 'nonce-aem' 'strict-dynamic' 'unsafe-inline' http: https:; base-uri 'self'; object-src 'none'; frame-src 'self' https:; require-trusted-types-for 'script';"
+  move-to-http-header="true"
+/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<script nonce="aem" src="/scripts/aem.js" type="module"></script>
+<script nonce="aem" src="/scripts/scripts.js" type="module"></script>
+<link rel="stylesheet" href="/styles/styles.css"/>
+  <script nonce="aem">window.LiveReloadOptions={port:3000,host:location.hostname,https:false};</script><script nonce="aem" src="/__internal__/livereload.js"></script><script nonce="aem">/*
+ * Copyright 2025 Adobe. All rights reserved.
+ * This file is licensed to you under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License. You may obtain a copy
+ * of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under
+ * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTATIONS
+ * OF ANY KIND, either express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+
+/**
+ * Browser Console Interceptor
+ * Intercepts console methods and forwards them via WebSocket to the server
+ * This script is self-contained and browser-compatible (no module system)
+ */
+(function iife() {
+  // Wait for LiveReload connection
+  var checkInterval = setInterval(function checkLiveReload() {
+    if (window.LiveReload && window.LiveReload.connector && window.LiveReload.connector.socket) {
+      clearInterval(checkInterval);
+
+      // Store original console methods
+      var originalConsole = {
+        log: console.log,
+        error: console.error,
+        warn: console.warn,
+        info: console.info,
+      };
+
+      // Helper to safely serialize arguments
+      function serializeArgs(args) {
+        return Array.from(args).map(function mapArg(arg) {
+          try {
+            if (arg instanceof Error) {
+              return { type: 'Error', message: arg.message, stack: arg.stack };
+            }
+            return JSON.parse(JSON.stringify(arg));
+          } catch (e) {
+            return String(arg);
+          }
+        });
+      }
+
+      // Get current file location
+      function getLocation() {
+        try {
+          var stack = new Error().stack;
+          var match = stack.match(/at.*?((https?:\/\/[^\s]+?):(\d+):(\d+))/);
+          if (match) {
+            return { url: match[2], line: match[3] };
+          }
+        } catch (e) {
+          // Ignore error when getting stack
+        }
+        return { url: window.location.href, line: 0 };
+      }
+
+      // Intercept console methods
+      ['log', 'error', 'warn', 'info'].forEach(function interceptLevel(level) {
+        console[level] = function interceptedConsole() {
+          // Call original method
+          originalConsole[level].apply(console, arguments);
+
+          // Forward to server if connected
+          if (window.LiveReload.connector.socket.readyState === 1) {
+            var location = getLocation();
+            window.LiveReload.connector.socket.send(JSON.stringify({
+              command: 'log',
+              level: level,
+              args: serializeArgs(arguments),
+              url: location.url,
+              line: location.line,
+            }));
+          }
+        };
+      });
+    }
+  }, 100);
+}());
+</script><meta property="hlx:proxyUrl" content="https://main--da-aem-eds--eds-as-2026.aem.page/"></head>
+  <body>
+    <header></header>
+    <main>
+      <div>
+        <div class="hero-banner">
+          <div>
+            <div><a href="https://www.polestar.com/dato-assets/94392/1778226684-polestar-home-polestar3-position-d.png?fm=avif&#x26;only-imgix=true&#x26;fit=min&#x26;q=80&#x26;dpr=1&#x26;w=1440">https://www.polestar.com/dato-assets/94392/1778226684-polestar-home-polestar3-position-d.png?fm=avif&#x26;only-imgix=true&#x26;fit=min&#x26;q=80&#x26;dpr=1&#x26;w=1440</a></div>
+          </div>
+          <div>
+            <div>
+              <h1 id="polestar-3"><strong>Polestar 3</strong></h1>
+              <h2 id="the-suv-others-aspire-to-be">The SUV others aspire to be.</h2>
+              <h2 id="now-with-800-v-technology">Now with 800 V technology.</h2>
+              <p>Discover</p>
+            </div>
+          </div>
+        </div>
+        <div class="hero-video">
+          <div>
+            <div><a href="https://mgmotor.scene7.com/is/content/mgmotor/MG%20Cyberster%20Coastal%20Film%20(Social%20Media)-0x720-3000k">https://mgmotor.scene7.com/is/content/mgmotor/MG%20Cyberster%20Coastal%20Film%20(Social%20Media)-0x720-3000k</a></div>
+          </div>
+          <div>
+            <div>
+              <h1 id="all-new-mg-cyberster-in-irises-cyan"><strong>All New MG Cyberster in Irises Cyan</strong></h1>
+              <p>KNOW MORE</p>
+            </div>
+          </div>
+        </div>
+        <p>Your forked repo is set up as an AEM Project, and you are ready to start developing.<br>The content you are looking at is served from this <a href="https://drive.google.com/drive/folders/1MGzOt7ubUh3gu7zhZIPb7R7dyRzG371j?usp=sharing">Google Drive</a><br><br>Adjust the <code>fstab.yaml</code> to point to a folder either in your sharepoint or your gdrive that you shared with AEM. See the full tutorial here:<br><br><a href="https://bit.ly/3aImqUL">https://www.aem.live/tutorial</a></p>
+        <h2 id="this-is-another-headline-here-for-more-content">This is another headline here for more content</h2>
+        <div class="columns">
+          <div>
+            <div>
+              <p>Columns block</p>
+              <ul>
+                <li>One</li>
+                <li>Two</li>
+                <li>Three</li>
+              </ul>
+              <p><strong><a href="/">Live</a></strong></p>
+            </div>
+            <div>
+              <picture>
+                <source type="image/webp" srcset="./media_17ec1442b1d2b9fa5ae0b2c51d327c022d7a0d6d9.png?width=2000&#x26;format=webply&#x26;optimize=medium" media="(min-width: 600px)">
+                <source type="image/webp" srcset="./media_17ec1442b1d2b9fa5ae0b2c51d327c022d7a0d6d9.png?width=750&#x26;format=webply&#x26;optimize=medium">
+                <source type="image/png" srcset="./media_17ec1442b1d2b9fa5ae0b2c51d327c022d7a0d6d9.png?width=2000&#x26;format=png&#x26;optimize=medium" media="(min-width: 600px)">
+                <img loading="lazy" alt="" src="./media_17ec1442b1d2b9fa5ae0b2c51d327c022d7a0d6d9.png?width=750&#x26;format=png&#x26;optimize=medium" width="2048" height="1365">
+              </picture>
+            </div>
+          </div>
+          <div>
+            <div>
+              <picture>
+                <source type="image/webp" srcset="./media_1729f1ee89b0906b7c66c98c778581dae957f641c.png?width=2000&#x26;format=webply&#x26;optimize=medium" media="(min-width: 600px)">
+                <source type="image/webp" srcset="./media_1729f1ee89b0906b7c66c98c778581dae957f641c.png?width=750&#x26;format=webply&#x26;optimize=medium">
+                <source type="image/png" srcset="./media_1729f1ee89b0906b7c66c98c778581dae957f641c.png?width=2000&#x26;format=png&#x26;optimize=medium" media="(min-width: 600px)">
+                <img loading="lazy" alt="" src="./media_1729f1ee89b0906b7c66c98c778581dae957f641c.png?width=750&#x26;format=png&#x26;optimize=medium" width="644" height="470">
+              </picture>
+            </div>
+            <div>
+              <p>Or you can just view the preview</p>
+              <p><em><a href="/">Preview</a></em></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="highlight">
+        <h2 id="boilerplate-highlights">Boilerplate Highlights?</h2>
+        <p>Find some of our favorite staff picks below:</p>
+        <div class="cards">
+          <div>
+            <div>
+              <picture>
+                <source type="image/webp" srcset="./media_18cb807b4a4b4adbbae54670f28889ac9134a0cc6.jpg?width=2000&#x26;format=webply&#x26;optimize=medium" media="(min-width: 600px)">
+                <source type="image/webp" srcset="./media_18cb807b4a4b4adbbae54670f28889ac9134a0cc6.jpg?width=750&#x26;format=webply&#x26;optimize=medium">
+                <source type="image/jpeg" srcset="./media_18cb807b4a4b4adbbae54670f28889ac9134a0cc6.jpg?width=2000&#x26;format=jpg&#x26;optimize=medium" media="(min-width: 600px)">
+                <img loading="lazy" alt="" src="./media_18cb807b4a4b4adbbae54670f28889ac9134a0cc6.jpg?width=750&#x26;format=jpg&#x26;optimize=medium" width="2048" height="1163">
+              </picture>
+            </div>
+            <div>
+              <p><strong>Unmatched speed</strong></p>
+              <p>AEM is the fastest way to publish, create, and serve websites</p>
+            </div>
+          </div>
+          <div>
+            <div>
+              <picture>
+                <source type="image/webp" srcset="./media_1966d5b29b90ed2299853fd6c4a26fed9a521d2f8.jpg?width=2000&#x26;format=webply&#x26;optimize=medium" media="(min-width: 600px)">
+                <source type="image/webp" srcset="./media_1966d5b29b90ed2299853fd6c4a26fed9a521d2f8.jpg?width=750&#x26;format=webply&#x26;optimize=medium">
+                <source type="image/jpeg" srcset="./media_1966d5b29b90ed2299853fd6c4a26fed9a521d2f8.jpg?width=2000&#x26;format=jpg&#x26;optimize=medium" media="(min-width: 600px)">
+                <img loading="lazy" alt="" src="./media_1966d5b29b90ed2299853fd6c4a26fed9a521d2f8.jpg?width=750&#x26;format=jpg&#x26;optimize=medium" width="2048" height="1409">
+              </picture>
+            </div>
+            <div>
+              <p><strong>Content at scale</strong></p>
+              <p>AEM allows you to publish more content in shorter time with smaller teams</p>
+            </div>
+          </div>
+          <div>
+            <div>
+              <picture>
+                <source type="image/webp" srcset="./media_1d7a9b665388d9f6f238bf019003b575d6fdc8365.jpg?width=2000&#x26;format=webply&#x26;optimize=medium" media="(min-width: 600px)">
+                <source type="image/webp" srcset="./media_1d7a9b665388d9f6f238bf019003b575d6fdc8365.jpg?width=750&#x26;format=webply&#x26;optimize=medium">
+                <source type="image/jpeg" srcset="./media_1d7a9b665388d9f6f238bf019003b575d6fdc8365.jpg?width=2000&#x26;format=jpg&#x26;optimize=medium" media="(min-width: 600px)">
+                <img loading="lazy" alt="" src="./media_1d7a9b665388d9f6f238bf019003b575d6fdc8365.jpg?width=750&#x26;format=jpg&#x26;optimize=medium" width="2048" height="1138">
+              </picture>
+            </div>
+            <div>
+              <p><strong>Uncertainty eliminated</strong></p>
+              <p>Preview content at 100% fidelity, get predictable content velocity, and shorten project durations</p>
+            </div>
+          </div>
+          <div>
+            <div>
+              <picture>
+                <source type="image/webp" srcset="./media_1e90f0ae453b61d78222b8001b59a3ea492af91fa.jpg?width=2000&#x26;format=webply&#x26;optimize=medium" media="(min-width: 600px)">
+                <source type="image/webp" srcset="./media_1e90f0ae453b61d78222b8001b59a3ea492af91fa.jpg?width=750&#x26;format=webply&#x26;optimize=medium">
+                <source type="image/jpeg" srcset="./media_1e90f0ae453b61d78222b8001b59a3ea492af91fa.jpg?width=2000&#x26;format=jpg&#x26;optimize=medium" media="(min-width: 600px)">
+                <img loading="lazy" alt="" src="./media_1e90f0ae453b61d78222b8001b59a3ea492af91fa.jpg?width=750&#x26;format=jpg&#x26;optimize=medium" width="2048" height="1338">
+              </picture>
+            </div>
+            <div>
+              <p><strong>Widen the talent pool</strong></p>
+              <p>Authors on AEM use Microsoft Word, Excel or Google Docs and need no training</p>
+            </div>
+          </div>
+          <div>
+            <div>
+              <picture>
+                <source type="image/webp" srcset="./media_1dbe223077c56184281329fbf6ee1f761c0aaabfa.jpg?width=2000&#x26;format=webply&#x26;optimize=medium" media="(min-width: 600px)">
+                <source type="image/webp" srcset="./media_1dbe223077c56184281329fbf6ee1f761c0aaabfa.jpg?width=750&#x26;format=webply&#x26;optimize=medium">
+                <source type="image/jpeg" srcset="./media_1dbe223077c56184281329fbf6ee1f761c0aaabfa.jpg?width=2000&#x26;format=jpg&#x26;optimize=medium" media="(min-width: 600px)">
+                <img loading="lazy" alt="" src="./media_1dbe223077c56184281329fbf6ee1f761c0aaabfa.jpg?width=750&#x26;format=jpg&#x26;optimize=medium" width="2048" height="1356">
+              </picture>
+            </div>
+            <div>
+              <p><strong>The low-code way to developer productivity</strong></p>
+              <p>Say goodbye to complex APIs spanning multiple languages. Anyone with a little bit of HTML, CSS, and JS can build a site on AEM.</p>
+            </div>
+          </div>
+          <div>
+            <div>
+              <picture>
+                <source type="image/webp" srcset="./media_1d25493a5aa2b3335f8658bca15ede2bb58f46cff.jpg?width=2000&#x26;format=webply&#x26;optimize=medium" media="(min-width: 600px)">
+                <source type="image/webp" srcset="./media_1d25493a5aa2b3335f8658bca15ede2bb58f46cff.jpg?width=750&#x26;format=webply&#x26;optimize=medium">
+                <source type="image/jpeg" srcset="./media_1d25493a5aa2b3335f8658bca15ede2bb58f46cff.jpg?width=2000&#x26;format=jpg&#x26;optimize=medium" media="(min-width: 600px)">
+                <img loading="lazy" alt="" src="./media_1d25493a5aa2b3335f8658bca15ede2bb58f46cff.jpg?width=750&#x26;format=jpg&#x26;optimize=medium" width="2048" height="1365">
+              </picture>
+            </div>
+            <div>
+              <p><strong>Headless is here</strong></p>
+              <p>Go directly from Microsoft Excel or Google Sheets to the web in mere seconds. Sanitize and collect form data at extreme scale with AEM Forms.</p>
+            </div>
+          </div>
+          <div>
+            <div>
+              <picture>
+                <source type="image/webp" srcset="./media_1ef83c9209dc28edf0f1bfbd13a0369eb3930358c.jpg?width=2000&#x26;format=webply&#x26;optimize=medium" media="(min-width: 600px)">
+                <source type="image/webp" srcset="./media_1ef83c9209dc28edf0f1bfbd13a0369eb3930358c.jpg?width=750&#x26;format=webply&#x26;optimize=medium">
+                <source type="image/jpeg" srcset="./media_1ef83c9209dc28edf0f1bfbd13a0369eb3930358c.jpg?width=2000&#x26;format=jpg&#x26;optimize=medium" media="(min-width: 600px)">
+                <img loading="lazy" alt="" src="./media_1ef83c9209dc28edf0f1bfbd13a0369eb3930358c.jpg?width=750&#x26;format=jpg&#x26;optimize=medium" width="2048" height="1434">
+              </picture>
+            </div>
+            <div>
+              <p><strong>Peak performance</strong></p>
+              <p>Use AEM's serverless architecture to meet any traffic need. Use AEM's PageSpeed Insights Github action to evaluate every Pull-Request for Lighthouse Score.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div></div>
+    </main>
+    <footer></footer>
+  </body>
+</html>

@@ -19,30 +19,16 @@ export default async function decorate(block) {
   
   const firstRow = rows[0];
   if (firstRow) {
-    console.log('Hero banner first row:', firstRow.innerHTML);
-    
     // Try picture element first
-    let imgElement = firstRow.querySelector('img');
-    
-    // If no img, try to get URL from link
-    if (!imgElement) {
+    const imgElement = firstRow.querySelector('img');
+    if (imgElement && imgElement.src) {
+      imageSrc = imgElement.src;
+      imageAlt = imgElement.alt || imageAlt;
+    } else {
       const linkElement = firstRow.querySelector('a');
       if (linkElement && linkElement.href) {
         imageSrc = linkElement.href;
-        console.log('Hero banner extracted image from link href:', imageSrc);
       }
-    } else {
-      // If img exists, get src from it
-      if (imgElement.src) {
-        imageSrc = imgElement.src;
-        imageAlt = imgElement.alt || imageAlt;
-        console.log('Hero banner extracted image src:', imageSrc);
-        console.log('Hero banner extracted image alt:', imageAlt);
-      }
-    }
-    
-    if (!imageSrc) {
-      console.warn('Hero banner: No image source found in first row');
     }
   }
 
@@ -53,43 +39,64 @@ export default async function decorate(block) {
 
   const contentRow = rows[1];
   if (contentRow) {
-    const paras = contentRow.querySelectorAll('p');
-    if (paras.length >= 2) {
-      headingText = paras[0].textContent.trim();
-      descriptionText = Array.from(paras).slice(1)
-        .map(p => p.textContent.trim())
-        .filter(Boolean)
-        .join(' ');
-    } else if (paras.length === 1) {
-      headingText = paras[0].textContent.trim();
-      // description may live in the next row
-      const descriptionCell = rows[2];
-      if (descriptionCell) {
-        const dparas = descriptionCell.querySelectorAll('p');
-        if (dparas.length > 0) {
-          descriptionText = Array.from(dparas)
-            .map(p => p.textContent.trim())
-            .filter(Boolean)
-            .join(' ');
-        } else {
-          descriptionText = descriptionCell.textContent.trim();
+    // Prefer authored heading tags if present (h1/h2/h3). Use the first
+    // heading as the main title and remaining headings/paragraphs as the
+    // description. This covers CMS content that outputs <h1>/<h2> tags.
+    const headingEl = contentRow.querySelector('h1, h2, h3');
+    if (headingEl) {
+      headingText = headingEl.textContent.trim();
+      // Collect subsequent headings and paragraphs in the same cell
+      const descParts = [];
+      Array.from(contentRow.children).forEach((child) => {
+        if (child === headingEl) return;
+        if (/(H1|H2|H3|P)/i.test(child.tagName)) {
+          const t = child.textContent.trim();
+          if (t) descParts.push(t);
         }
+      });
+      // If no description parts found in the same row, check the next row
+      if (descParts.length === 0 && rows[2]) {
+        const nextRow = rows[2];
+        const nextParts = Array.from(nextRow.querySelectorAll('p, h1, h2, h3'))
+          .map((el) => el.textContent.trim())
+          .filter(Boolean);
+        descriptionText = nextParts.join(' ');
+      } else {
+        descriptionText = descParts.join(' ');
       }
     } else {
-      // No paragraph tags — attempt to split by newlines
-      const lines = contentRow.textContent.split(/\r?\n/).map(s => s.trim()).filter(Boolean);
-      if (lines.length > 0) {
-        headingText = lines.shift();
-        descriptionText = lines.join(' ');
+      // Fallback to previous paragraph/newline logic
+      const paras = contentRow.querySelectorAll('p');
+      if (paras.length >= 2) {
+        headingText = paras[0].textContent.trim();
+        descriptionText = Array.from(paras).slice(1)
+          .map((p) => p.textContent.trim())
+          .filter(Boolean)
+          .join(' ');
+      } else if (paras.length === 1) {
+        headingText = paras[0].textContent.trim();
+        const descriptionCell = rows[2];
+        if (descriptionCell) {
+          const dparas = descriptionCell.querySelectorAll('p');
+          if (dparas.length > 0) descriptionText = Array.from(dparas)
+            .map((p) => p.textContent.trim())
+            .filter(Boolean)
+            .join(' ');
+          else descriptionText = descriptionCell.textContent.trim();
+        }
+      } else {
+        const lines = contentRow.textContent.split(/\r?\n/).map((s) => s.trim()).filter(Boolean);
+        if (lines.length > 0) {
+          headingText = lines.shift();
+          descriptionText = lines.join(' ');
+        }
+        if (!headingText) headingText = contentRow.textContent.trim();
+        if (!descriptionText && rows[2]) descriptionText = rows[2].textContent.trim();
       }
-      // If still empty, fallback to using rows[1] as heading and rows[2] as description
-      if (!headingText) headingText = contentRow.textContent.trim();
-      if (!descriptionText && rows[2]) descriptionText = rows[2].textContent.trim();
     }
   }
 
-  console.log('Hero banner heading:', headingText);
-  console.log('Hero banner description:', descriptionText);
+  // Heading and description extracted from CMS content
 
   // Get CTA link
   const ctaCell = rows[3]?.querySelector('a');
@@ -109,17 +116,13 @@ export default async function decorate(block) {
   
   // Add the image to the background
   if (imageSrc) {
-    console.log('Creating image element with src:', imageSrc);
     const img = document.createElement('img');
     img.src = imageSrc;
     img.alt = imageAlt;
     img.loading = 'eager';
-    img.onload = () => console.log('Hero banner image loaded successfully');
-    img.onerror = (e) => console.error('Hero banner image failed to load:', e);
+    img.addEventListener('load', function () {});
+    img.addEventListener('error', function () {});
     backgroundDiv.appendChild(img);
-  } else {
-    console.warn('No image available for hero banner');
-    console.warn('First row content:', firstRow?.innerHTML);
   }
 
   // The CSS uses a pseudo-element on `.hero-banner` for the overlay,
