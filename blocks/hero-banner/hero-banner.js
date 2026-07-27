@@ -3,6 +3,8 @@
  * @param {Element} block The block element
  */
 export default async function decorate(block) {
+  // Ensure the block has the root class expected by the CSS
+  block.classList.add('hero-banner');
   // Expected structure:
   // Row 1: image (picture/img element)
   // Row 2: heading
@@ -44,28 +46,49 @@ export default async function decorate(block) {
     }
   }
 
-  // Get heading
-  const headingText = rows[1]?.textContent?.trim() || '';
-
-  // Get description
-  const descriptionCell = rows[2];
+  // Get heading and description. Some authors place heading + description
+  // in the same CMS row (rows[1]) — handle that case by splitting.
+  let headingText = '';
   let descriptionText = '';
-  
-  if (descriptionCell) {
-    // Get all text content and preserve line breaks
-    const paragraphs = descriptionCell.querySelectorAll('p');
-    if (paragraphs.length > 0) {
-      // Join multiple paragraphs with line breaks
-      descriptionText = Array.from(paragraphs)
+
+  const contentRow = rows[1];
+  if (contentRow) {
+    const paras = contentRow.querySelectorAll('p');
+    if (paras.length >= 2) {
+      headingText = paras[0].textContent.trim();
+      descriptionText = Array.from(paras).slice(1)
         .map(p => p.textContent.trim())
-        .filter(text => text.length > 0)
+        .filter(Boolean)
         .join(' ');
+    } else if (paras.length === 1) {
+      headingText = paras[0].textContent.trim();
+      // description may live in the next row
+      const descriptionCell = rows[2];
+      if (descriptionCell) {
+        const dparas = descriptionCell.querySelectorAll('p');
+        if (dparas.length > 0) {
+          descriptionText = Array.from(dparas)
+            .map(p => p.textContent.trim())
+            .filter(Boolean)
+            .join(' ');
+        } else {
+          descriptionText = descriptionCell.textContent.trim();
+        }
+      }
     } else {
-      // Fallback to all text content
-      descriptionText = descriptionCell.textContent.trim();
+      // No paragraph tags — attempt to split by newlines
+      const lines = contentRow.textContent.split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+      if (lines.length > 0) {
+        headingText = lines.shift();
+        descriptionText = lines.join(' ');
+      }
+      // If still empty, fallback to using rows[1] as heading and rows[2] as description
+      if (!headingText) headingText = contentRow.textContent.trim();
+      if (!descriptionText && rows[2]) descriptionText = rows[2].textContent.trim();
     }
   }
-  
+
+  console.log('Hero banner heading:', headingText);
   console.log('Hero banner description:', descriptionText);
 
   // Get CTA link
@@ -99,10 +122,8 @@ export default async function decorate(block) {
     console.warn('First row content:', firstRow?.innerHTML);
   }
 
-  // Create overlay for text readability
-  const overlay = document.createElement('div');
-  overlay.className = 'hero-banner-overlay';
-  backgroundDiv.appendChild(overlay);
+  // The CSS uses a pseudo-element on `.hero-banner` for the overlay,
+  // so we do not create a separate overlay element here.
 
   // Create text content wrapper
   const textWrapper = document.createElement('div');
@@ -127,7 +148,7 @@ export default async function decorate(block) {
   // Create button text span
   const buttonTextSpan = document.createElement('span');
   buttonTextSpan.className = 'hero-banner-cta-text';
-  buttonTextSpan.textContent = ctaText + ' →';
+  buttonTextSpan.textContent = ctaText;
 
   ctaButton.appendChild(buttonTextSpan);
 
