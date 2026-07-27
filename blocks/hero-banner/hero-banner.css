@@ -109,6 +109,7 @@
 
 .hero-banner-actions {
   margin: 0;
+  padding-top: 40px;
 }
 
 .hero-banner-cta {
@@ -135,7 +136,7 @@
 }
 
 .hero-banner-cta::after {
-  content: "→";
+  content: "";
   font-size: 20px;
   transition: transform .25s ease;
 }
