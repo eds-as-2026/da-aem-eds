@@ -16,7 +16,7 @@ export default async function decorate(block) {
   // Get image - extract from picture element or link
   let imageSrc = null;
   let imageAlt = 'Hero banner background';
-  
+
   const firstRow = rows[0];
   if (firstRow) {
     // Try picture element first
@@ -78,11 +78,14 @@ export default async function decorate(block) {
         const descriptionCell = rows[2];
         if (descriptionCell) {
           const dparas = descriptionCell.querySelectorAll('p');
-          if (dparas.length > 0) descriptionText = Array.from(dparas)
-            .map((p) => p.textContent.trim())
-            .filter(Boolean)
-            .join(' ');
-          else descriptionText = descriptionCell.textContent.trim();
+          if (dparas.length > 0) {
+            descriptionText = Array.from(dparas)
+              .map((p) => p.textContent.trim())
+              .filter(Boolean)
+              .join(' ');
+          } else {
+            descriptionText = descriptionCell.textContent.trim();
+          }
         }
       } else {
         const lines = contentRow.textContent.split(/\r?\n/).map((s) => s.trim()).filter(Boolean);
@@ -113,15 +116,13 @@ export default async function decorate(block) {
   // Create background image element wrapper
   const backgroundDiv = document.createElement('div');
   backgroundDiv.className = 'hero-banner-background';
-  
+
   // Add the image to the background
   if (imageSrc) {
     const img = document.createElement('img');
     img.src = imageSrc;
     img.alt = imageAlt;
     img.loading = 'eager';
-    img.addEventListener('load', function () {});
-    img.addEventListener('error', function () {});
     backgroundDiv.appendChild(img);
   }
 
