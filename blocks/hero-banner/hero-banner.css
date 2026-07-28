@@ -2,11 +2,25 @@
    Hero Banner
    ========================================================================== */
 
+/* Break the block out of the default centered/padded section wrapper so the
+   background image runs full-bleed edge-to-edge. Needs the extra
+   .hero-banner-container ancestor class for specificity, otherwise it loses
+   to the more specific `main > .section > div` rule in styles.css. */
+.hero-banner-container .hero-banner-wrapper {
+  max-width: unset;
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+}
+
 .hero-banner {
   position: relative;
   width: 100%;
-  height: 92vh;
-  min-height: 720px;
+  height: 70vh;
+  min-height: 460px;
+  max-height: 620px;
   overflow: hidden;
   background: #f5f5f5;
 }
@@ -43,6 +57,8 @@
    Overlay
    ========================================================================== */
 
+/* Mobile: text sits at the bottom of the image, so fade the overlay in
+   from the bottom for contrast. */
 .hero-banner::before {
   content: "";
   position: absolute;
@@ -50,11 +66,10 @@
   z-index: 2;
   pointer-events: none;
   background: linear-gradient(
-    90deg,
+    180deg,
     rgb(255 255 255 / 88%) 0%,
-    rgb(255 255 255 / 60%) 22%,
-    rgb(255 255 255 / 18%) 42%,
-    rgb(255 255 255 / 0%) 60%
+    rgb(255 255 255 / 60%) 40%,
+    rgb(255 255 255 / 0%) 100%
   );
 }
 
@@ -62,13 +77,12 @@
    Content
    ========================================================================== */
 
+/* Mobile: text block anchored to the bottom, full width. */
 .hero-banner-text {
   position: absolute;
-  top: 50%;
-  left: 9%;
-  transform: translateY(-50%);
   z-index: 3;
-  max-width: 460px;
+  inset: auto 20px 28px;
+  max-width: none;
 }
 
 /* ==========================================================================
@@ -76,13 +90,36 @@
    ========================================================================== */
 
 .hero-banner-heading {
-  margin: 0 0 18px;
+  margin: 0 0 10px;
   font-family: Arial, Helvetica, sans-serif;
-  font-size: clamp(3rem, 5vw, 4.2rem);
+  font-size: 1.6rem;
   font-weight: 400;
-  line-height: 1.05;
-  letter-spacing: -.02em;
+  line-height: 1.1;
+  letter-spacing: -.01em;
   color: #000;
+}
+
+/* Tighter bottom margin when a subheading immediately follows, so the two
+   read as one grouped title block (e.g. "Sustainability" / "Being
+   transparent with the facts"). */
+.hero-banner-heading-grouped {
+  margin-bottom: 2px;
+}
+
+/* ==========================================================================
+   Subheading
+   ========================================================================== */
+
+/* Grouped tightly under the heading, same scale, lighter color - only
+   rendered when the content also has a separate body paragraph. */
+.hero-banner-subheading {
+  margin: 0 0 20px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1.6rem;
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -.01em;
+  color: #8a8a8a;
 }
 
 /* ==========================================================================
@@ -90,13 +127,27 @@
    ========================================================================== */
 
 .hero-banner-description {
-  margin: 0 0 46px;
+  margin: 0 0 20px;
   font-family: Arial, Helvetica, sans-serif;
-  font-size: clamp(2rem, 2.8vw, 3rem);
-  font-weight: 300;
-  line-height: 1.08;
-  letter-spacing: -.02em;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.4;
   color: #5f5f5f;
+}
+
+/* ==========================================================================
+   Body
+   ========================================================================== */
+
+/* Separate smaller paragraph below the heading/subheading group - only
+   rendered when authored with a plain paragraph. */
+.hero-banner-body {
+  margin: 0 0 20px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.4;
+  color: #333;
 }
 
 /* ==========================================================================
@@ -111,123 +162,156 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 190px;
-  padding: 18px 34px;
+  min-width: 140px;
+  padding: 12px 24px;
   border: 1px solid #000;
-  background: rgb(255 255 255 / 35%);
-  backdrop-filter: blur(2px);
-  color: #000;
-  text-decoration: none;
-  font-size: 1.25rem;
+  background: #fff;
+  font-size: .95rem;
   font-weight: 400;
   transition: .35s ease;
 }
 
 .hero-banner-cta::after {
   content: "→";
-  margin-left: 14px;
+  margin-left: 10px;
   transition: transform .3s ease;
 }
 
 .hero-banner-cta:hover {
   background: #000;
-  color: #fff;
 }
 
 .hero-banner-cta:hover::after {
   transform: translateX(5px);
 }
 
-/* ==========================================================================
-   Tablet
-   ========================================================================== */
+/* Extra specificity needed to beat the global a:any-link / a:hover rules
+   in styles.css, which otherwise win over a single-class selector. */
+.hero-banner .hero-banner-cta,
+.hero-banner .hero-banner-cta:any-link {
+  color: #000;
+  text-decoration: none;
+}
 
-@media (width <= 991px) {
-  .hero-banner {
-    height: 80vh;
-    min-height: 620px;
-  }
-
-  .hero-banner-text {
-    left: 7%;
-    max-width: 420px;
-  }
-
-  .hero-banner-heading {
-    font-size: clamp(2.6rem, 5vw, 3.6rem);
-  }
-
-  .hero-banner-description {
-    font-size: clamp(1.7rem, 3vw, 2.3rem);
-  }
+.hero-banner .hero-banner-cta:hover {
+  color: #fff;
+  text-decoration: none;
 }
 
 /* ==========================================================================
-   Mobile
+   Tablet (600px+)
    ========================================================================== */
 
-@media (width <= 768px) {
+@media (width >= 600px) {
   .hero-banner {
-    height: 75vh;
-    min-height: 560px;
+    height: 60vh;
+    min-height: 520px;
+    max-height: 700px;
   }
 
   .hero-banner::before {
     background: linear-gradient(
-      180deg,
-      rgb(255 255 255 / 94%) 0%,
-      rgb(255 255 255 / 72%) 45%,
-      rgb(255 255 255 / 0%) 100%
+      90deg,
+      rgb(255 255 255 / 75%) 0%,
+      rgb(255 255 255 / 45%) 20%,
+      rgb(255 255 255 / 12%) 38%,
+      rgb(255 255 255 / 0%) 50%
     );
   }
 
   .hero-banner-text {
-    inset: auto 24px 40px;
-    transform: none;
-    max-width: none;
+    inset: unset;
+    top: 50%;
+    left: 7%;
+    transform: translateY(-50%);
+    max-width: 360px;
   }
 
   .hero-banner-heading {
-    font-size: 2.6rem;
+    font-size: clamp(1.75rem, 3.6vw, 2.2rem);
     margin-bottom: 12px;
   }
 
-  .hero-banner-description {
-    font-size: 1.9rem;
-    margin-bottom: 30px;
+  .hero-banner-heading-grouped {
+    margin-bottom: 2px;
+  }
+
+  .hero-banner-subheading {
+    font-size: clamp(1.75rem, 3.6vw, 2.2rem);
+    margin-bottom: 24px;
+  }
+
+  .hero-banner-description,
+  .hero-banner-body {
+    font-size: clamp(1.05rem, 1.8vw, 1.2rem);
+    margin-bottom: 24px;
   }
 
   .hero-banner-cta {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 190px;
-    height: 70px;
-    padding: 0 34px;
-    border: 1px solid #111;
-    background: transparent;
-    color: #111;
-    text-decoration: none;
-    font-size: 1.25rem;
-    font-weight: 400;
-    transition:
-      background-color .25s ease,
-      color .25s ease,
-      border-color .25s ease;
+    min-width: 150px;
+    padding: 14px 28px;
+    font-size: 1rem;
+  }
+}
+
+/* ==========================================================================
+   Laptop / Desktop (900px+)
+   ========================================================================== */
+
+@media (width >= 900px) {
+  .hero-banner {
+    height: 64vh;
+    min-height: 600px;
+    max-height: 820px;
   }
 
-  .hero-banner-cta::after {
-    content: "→";
-    margin-left: 14px;
-    transition: transform .25s ease;
+  .hero-banner-text {
+    left: 9%;
+    max-width: 420px;
   }
 
-  .hero-banner-cta:hover {
-    background: #111;
-    color: #fff;
+  .hero-banner-heading {
+    font-size: clamp(2rem, 3.2vw, 2.6rem);
   }
 
-  .hero-banner-cta:hover::after {
-    transform: translateX(4px);
+  .hero-banner-subheading {
+    font-size: clamp(2rem, 3.2vw, 2.6rem);
+  }
+
+  .hero-banner-description,
+  .hero-banner-body {
+    font-size: clamp(1.1rem, 1.4vw, 1.375rem);
+  }
+
+  .hero-banner-cta {
+    min-width: 160px;
+    padding: 15px 30px;
+  }
+}
+
+/* ==========================================================================
+   Large desktop / big screens (1200px+)
+   ========================================================================== */
+
+@media (width >= 1200px) {
+  .hero-banner {
+    max-height: 900px;
+  }
+
+  .hero-banner-text {
+    max-width: 460px;
+  }
+
+  .hero-banner-heading {
+    font-size: clamp(2.2rem, 2.4vw, 3rem);
+  }
+
+  .hero-banner-subheading {
+    font-size: clamp(2.2rem, 2.4vw, 3rem);
+  }
+
+  .hero-banner-description,
+  .hero-banner-body {
+    font-size: clamp(1.2rem, 1.2vw, 1.5rem);
   }
 }
