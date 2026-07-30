@@ -1,0 +1,124 @@
+/* ==========================================================================
+   Charging — diagonal dark-to-gray split, headline+CTA left, stats right
+   ========================================================================== */
+
+.charging-container .charging-wrapper {
+  max-width: unset;
+  padding: 0;
+}
+
+.charging-container.section {
+  margin: 0;
+  padding: 0;
+}
+
+.charging {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding: 40px 24px;
+  background: linear-gradient(135deg, #161616 0% 42%, #4a4a4a 58% 100%);
+  color: rgb(255 255 255);
+}
+
+.charging-content {
+  max-width: 480px;
+}
+
+.charging-heading {
+  margin: 0 0 16px;
+  font-family: var(--body-font-family);
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.charging-cta-wrapper {
+  margin: 0;
+}
+
+.charging a.charging-cta:any-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: rgb(255 255 255);
+  font-family: var(--body-font-family);
+  font-size: 15px;
+  font-weight: 400;
+  text-decoration: none;
+}
+
+.charging a.charging-cta:any-link::after {
+  content: "";
+  width: 14px;
+  height: 14px;
+  flex: 0 0 auto;
+  background-color: currentcolor;
+  mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 2 6.95 3.05l4.2 4.2H2v1.5h9.15l-4.2 4.2L8 14l6-6-6-6Z" fill="black"/></svg>') no-repeat center / contain;
+}
+
+.charging a.charging-cta:any-link:hover {
+  text-decoration: underline;
+}
+
+.charging-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.charging-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.charging-stat-value {
+  margin: 0;
+  font-family: var(--body-font-family);
+  font-size: 32px;
+  font-weight: 500;
+}
+
+.charging-stat-divider {
+  height: 1px;
+  background: rgb(255 255 255 / 30%);
+}
+
+.charging-stat-label {
+  margin: 0;
+  color: rgb(255 255 255 / 75%);
+  font-family: var(--body-font-family);
+  font-size: 13px;
+}
+
+/* ==========================================================================
+   Laptop / Desktop (900px+)
+   ========================================================================== */
+
+@media (width >= 900px) {
+  .charging {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 64px;
+    padding: 64px 80px;
+  }
+
+  .charging-heading {
+    font-size: 24px;
+  }
+
+  .charging-stats {
+    flex-direction: row;
+    gap: 64px;
+  }
+
+  .charging-stat {
+    min-width: 180px;
+  }
+
+  .charging-stat-value {
+    font-size: 40px;
+  }
+}

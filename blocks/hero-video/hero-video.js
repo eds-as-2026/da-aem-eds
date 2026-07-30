@@ -1,7 +1,12 @@
 /**
  * Hero Video block
- * Row 1: a link whose href is a background video URL (autoplaying, muted, looped)
+ * Row 1: a link whose href is a background video URL (autoplaying, muted,
+ * looped), OR an authored picture/img for a static background image.
  * Row 2: title (h1) + CTA button
+ * Row 3 (optional): up to three stat paragraphs, each "Label<br><strong>Value</strong>"
+ * (e.g. "Range up to<br><strong>647 km</strong>") - renders as stat blocks
+ * under the title and repositions the content to the top of the hero
+ * instead of the default bottom-left.
  *
  * @param {Element} block
  */
@@ -9,6 +14,7 @@ export default function decorate(block) {
   const rows = [...block.children];
   const mediaRow = rows[0];
   const contentRow = rows[1];
+  const statsRow = rows[2];
 
   // Build the background video from the row-1 link (or picture fallback)
   const mediaLink = mediaRow?.querySelector('a');
@@ -79,7 +85,11 @@ export default function decorate(block) {
       }
     });
     mediaRow.append(muteToggle);
-  } else if (!picture) {
+  } else if (picture) {
+    // Static image fallback (no video source authored) - still needs the
+    // positioning class the CSS relies on to render full-bleed.
+    mediaRow.classList.add('hero-video-media');
+  } else {
     block.classList.add('no-image');
   }
 
@@ -92,6 +102,47 @@ export default function decorate(block) {
       cta.classList.add('hero-video-cta');
       const p = cta.closest('p');
       if (p) p.classList.add('hero-video-cta-wrapper');
+    }
+
+    const stats = statsRow ? Array.from(statsRow.querySelectorAll('p')).map((p) => {
+      const valueEl = p.querySelector('strong, b');
+      const value = valueEl ? valueEl.textContent.trim() : '';
+      const labelEl = p.cloneNode(true);
+      const valueInClone = labelEl.querySelector('strong, b');
+      if (valueInClone) valueInClone.remove();
+      const label = labelEl.textContent.trim();
+      return { label, value };
+    }).filter((stat) => stat.label || stat.value) : [];
+
+    if (stats.length) {
+      contentRow.classList.add('hero-video-content-top');
+
+      const statsWrapper = document.createElement('div');
+      statsWrapper.className = 'hero-video-stats';
+      stats.forEach((stat) => {
+        const statEl = document.createElement('div');
+        statEl.className = 'hero-video-stat';
+        if (stat.label) {
+          const label = document.createElement('span');
+          label.className = 'hero-video-stat-label';
+          label.textContent = stat.label;
+          statEl.appendChild(label);
+        }
+        if (stat.value) {
+          const value = document.createElement('span');
+          value.className = 'hero-video-stat-value';
+          value.textContent = stat.value;
+          statEl.appendChild(value);
+        }
+        statsWrapper.appendChild(statEl);
+      });
+
+      const heading = contentRow.querySelector('h1');
+      if (heading) {
+        heading.after(statsWrapper);
+      } else {
+        contentRow.append(statsWrapper);
+      }
     }
   }
 }

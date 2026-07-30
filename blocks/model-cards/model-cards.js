@@ -1,3 +1,12 @@
+import { createOptimizedPicture } from '../../scripts/aem.js';
+
+// Cards are always displayed at 2 columns from 600px+ (never 3+, see
+// model-cards.css), so they only ever need one larger tier beyond mobile.
+const MODEL_CARDS_BREAKPOINTS = [
+  { media: '(min-width: 600px)', width: '900' },
+  { width: '750' },
+];
+
 /**
  * loads and decorates the model-cards block
  * @param {Element} block The block element
@@ -54,11 +63,8 @@ export default function decorate(block) {
     const imageWrapper = document.createElement('div');
     imageWrapper.className = 'model-cards-card-image';
     if (imageSrc) {
-      const img = document.createElement('img');
-      img.src = imageSrc;
-      img.alt = imageAlt;
-      img.loading = 'lazy';
-      imageWrapper.appendChild(img);
+      const picture = createOptimizedPicture(imageSrc, imageAlt, false, MODEL_CARDS_BREAKPOINTS);
+      imageWrapper.appendChild(picture);
     }
 
     const body = document.createElement('div');

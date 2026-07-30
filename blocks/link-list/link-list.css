@@ -9,7 +9,7 @@
 }
 
 .link-list-item {
-  border-top: 1px solid #eaeaea;
+  /* border-top: 1px solid #eaeaea; */
 }
 
 .link-list-item:first-child {
@@ -22,7 +22,7 @@
   justify-content: space-between;
   gap: 16px;
   padding: 16px 0;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--body-font-family);
   font-size: 1.6rem;
   font-weight: 500;
   line-height: 1.15;

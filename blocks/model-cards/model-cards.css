@@ -2,17 +2,35 @@
    Model Cards
    ========================================================================== */
 
+/* full-bleed: override EDS section max-width/padding */
+.model-cards-container .model-cards-wrapper {
+  max-width: unset;
+  padding: 0;
+}
+
+.model-cards-container.section {
+  margin: 0;
+  padding: 0;
+}
+
 .model-cards-list {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 24px;
+  gap: 0;
   margin: 0;
-  padding: 0;
+  padding: 0 24px;
   list-style: none;
 }
 
+/* Divider lines matching the real site: border-bottom for the horizontal
+   line, and a box-shadow (not border-right) for the vertical line so it
+   doesn't add to the box width inside the grid. Applied to every card
+   uniformly - no nth-child/last-child exclusions, matching the real
+   markup, which applies this same rule regardless of grid position. */
 .model-cards-card {
   margin: 0;
+  border-bottom: 1px solid rgb(0 0 0 / 30%);
+  box-shadow: 1px 0 0 0 rgb(0 0 0 / 30%);
 }
 
 .model-cards-card-link {
@@ -46,6 +64,12 @@
   padding: 24px;
 }
 
+.model-cards-card-image picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
 .model-cards-card-image img {
   display: block;
   width: 100%;
@@ -65,7 +89,7 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--body-font-family);
 }
 
 .model-cards-card-title {
@@ -97,8 +121,11 @@
 
 @media (width >= 600px) {
   .model-cards-list {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 28px;
+    /* minmax(0, 1fr), not plain 1fr - otherwise each column's implicit
+       min-width follows its content's intrinsic size, so cards with wider
+       content can push the divider line off the true 50% center. */
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding: 0 32px;
   }
 
   .model-cards-card-title {
@@ -112,7 +139,7 @@
 
 @media (width >= 900px) {
   .model-cards-list {
-    gap: 32px;
+    padding: 0 48px;
   }
 }
 
@@ -121,6 +148,10 @@
    ========================================================================== */
 
 @media (width >= 1200px) {
+  .model-cards-list {
+    padding: 0 80px;
+  }
+
   .model-cards-card-body {
     top: 32px;
     left: 32px;

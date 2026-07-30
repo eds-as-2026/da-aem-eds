@@ -110,6 +110,46 @@
   letter-spacing: 0.16px;
 }
 
+/* --- top-positioned variant (row 3 stats present) --- */
+.hero-video .hero-video-content-top {
+  inset: 32px auto auto 24px;
+}
+
+/* product-name treatment: a real heading, not the small caption above */
+.hero-video .hero-video-content-top h1 {
+  font-size: 28px;
+  font-weight: 500;
+  letter-spacing: normal;
+}
+
+.hero-video-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px 32px;
+}
+
+.hero-video-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.hero-video-stat-label {
+  color: rgb(255 255 255 / 75%);
+  font-family: var(--body-font-family);
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.16px;
+}
+
+.hero-video-stat-value {
+  color: rgb(255 255 255);
+  font-family: var(--body-font-family);
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: 0.16px;
+}
+
 /* CTA wrapper paragraph — no inline spacing */
 .hero-video .hero-video-cta-wrapper {
   margin: 0;
@@ -161,6 +201,26 @@
 
   .hero-video .hero-video-content > div {
     gap: 44px;
+  }
+
+  .hero-video .hero-video-content-top {
+    inset: 68px auto auto 80px;
+  }
+
+  .hero-video .hero-video-content-top h1 {
+    font-size: 40px;
+  }
+
+  .hero-video-stats {
+    gap: 32px 48px;
+  }
+
+  .hero-video-stat-label {
+    font-size: 14px;
+  }
+
+  .hero-video-stat-value {
+    font-size: 28px;
   }
 
   .hero-video .hero-video-mute {

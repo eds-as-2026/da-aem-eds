@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Polestar 3</title>
+    <link rel="canonical" href="https://localhost:3000/global/polestar-3">
+    <meta property="og:title" content="Polestar 3">
+    <meta property="og:url" content="https://localhost:3000/global/polestar-3">
+    <meta property="og:image" content="https://localhost:3000/global/media_18e341c5eeb63e7acbabe79a9a89db742df79ecc1.png?width=1200&#x26;format=pjpg&#x26;optimize=medium">
+    <meta property="og:image:secure_url" content="https://localhost:3000/global/media_18e341c5eeb63e7acbabe79a9a89db742df79ecc1.png?width=1200&#x26;format=pjpg&#x26;optimize=medium">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Polestar 3">
+    <meta name="twitter:image" content="https://localhost:3000/global/media_18e341c5eeb63e7acbabe79a9a89db742df79ecc1.png?width=1200&#x26;format=pjpg&#x26;optimize=medium">
+    <meta
+  http-equiv="Content-Security-Policy"
+  content="script-src 'nonce-aem' 'strict-dynamic' 'unsafe-inline' http: https:; base-uri 'self'; object-src 'none'; frame-src 'self' https:; require-trusted-types-for 'script';"
+  move-to-http-header="true"
+/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<script nonce="aem" src="/scripts/aem.js" type="module"></script>
+<script nonce="aem" src="/scripts/scripts.js" type="module"></script>
+<link rel="stylesheet" href="/styles/styles.css"/>
+  <script nonce="aem">window.LiveReloadOptions={port:3000,host:location.hostname,https:false};</script><script nonce="aem" src="/__internal__/livereload.js"></script><script nonce="aem">/*
+ * Copyright 2025 Adobe. All rights reserved.
+ * This file is licensed to you under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License. You may obtain a copy
+ * of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under
+ * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTATIONS
+ * OF ANY KIND, either express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+
+/**
+ * Browser Console Interceptor
+ * Intercepts console methods and forwards them via WebSocket to the server
+ * This script is self-contained and browser-compatible (no module system)
+ */
+(function iife() {
+  // Wait for LiveReload connection
+  var checkInterval = setInterval(function checkLiveReload() {
+    if (window.LiveReload && window.LiveReload.connector && window.LiveReload.connector.socket) {
+      clearInterval(checkInterval);
+
+      // Store original console methods
+      var originalConsole = {
+        log: console.log,
+        error: console.error,
+        warn: console.warn,
+        info: console.info,
+      };
+
+      // Helper to safely serialize arguments
+      function serializeArgs(args) {
+        return Array.from(args).map(function mapArg(arg) {
+          try {
+            if (arg instanceof Error) {
+              return { type: 'Error', message: arg.message, stack: arg.stack };
+            }
+            return JSON.parse(JSON.stringify(arg));
+          } catch (e) {
+            return String(arg);
+          }
+        });
+      }
+
+      // Get current file location
+      function getLocation() {
+        try {
+          var stack = new Error().stack;
+          var match = stack.match(/at.*?((https?:\/\/[^\s]+?):(\d+):(\d+))/);
+          if (match) {
+            return { url: match[2], line: match[3] };
+          }
+        } catch (e) {
+          // Ignore error when getting stack
+        }
+        return { url: window.location.href, line: 0 };
+      }
+
+      // Intercept console methods
+      ['log', 'error', 'warn', 'info'].forEach(function interceptLevel(level) {
+        console[level] = function interceptedConsole() {
+          // Call original method
+          originalConsole[level].apply(console, arguments);
+
+          // Forward to server if connected
+          if (window.LiveReload.connector.socket.readyState === 1) {
+            var location = getLocation();
+            window.LiveReload.connector.socket.send(JSON.stringify({
+              command: 'log',
+              level: level,
+              args: serializeArgs(arguments),
+              url: location.url,
+              line: location.line,
+            }));
+          }
+        };
+      });
+    }
+  }, 100);
+}());
+</script><meta property="hlx:proxyUrl" content="https://main--da-aem-eds--eds-as-2026.aem.page/global/polestar-3"></head>
+  <body>
+    <header></header>
+    <main>
+      <div>
+        <div class="hero-video">
+          <div>
+            <div><a href="https://www.polestar.com/dato-assets/94392/1772094803-01a-polestar-3-27-overview-hero-d.mp4">https://www.polestar.com/dato-assets/94392/1772094803-01a-polestar-3-27-overview-hero-d.mp4</a></div>
+          </div>
+          <div>
+            <div>
+              <h1 id="polestar-3"><strong>Polestar 3</strong></h1>
+            </div>
+          </div>
+          <div>
+            <div>
+              <p>Range up to<br><strong>647 km</strong></p>
+              <p>0-100 km/h<br><strong>3.9 sec</strong></p>
+              <p>Power up to<br><strong>500 kW</strong></p>
+            </div>
+          </div>
+        </div>
+        <div class="hero-banner">
+          <div>
+            <div>
+              <picture>
+                <source type="image/webp" srcset="./media_18e341c5eeb63e7acbabe79a9a89db742df79ecc1.png?width=2000&#x26;format=webply&#x26;optimize=medium" media="(min-width: 600px)">
+                <source type="image/webp" srcset="./media_18e341c5eeb63e7acbabe79a9a89db742df79ecc1.png?width=750&#x26;format=webply&#x26;optimize=medium">
+                <source type="image/png" srcset="./media_18e341c5eeb63e7acbabe79a9a89db742df79ecc1.png?width=2000&#x26;format=png&#x26;optimize=medium" media="(min-width: 600px)">
+                <img loading="lazy" alt="" src="./media_18e341c5eeb63e7acbabe79a9a89db742df79ecc1.png?width=750&#x26;format=png&#x26;optimize=medium" width="1120" height="630">
+              </picture>
+            </div>
+          </div>
+          <div>
+            <div>
+              <h2 id="yes-its-an-suv-and-it-drives-like-a-sports-car">Yes, it's an SUV. And it drives like a sports car.</h2>
+            </div>
+          </div>
+        </div>
+        <div class="feature-highlights">
+          <div>
+            <div>
+              <h1 id="httpswwwpolestarcomdato-assets943921772095455-02-1-polestar-3-27-overview-exterior-features-djpgfmavifonly-imgixtruefitminq80dpr1w1440"><strong><a href="https://www.polestar.com/dato-assets/94392/1772095455-02-1-polestar-3-27-overview-exterior-features-d.jpg?fm=avif&#x26;only-imgix=true&#x26;fit=min&#x26;q=80&#x26;dpr=1&#x26;w=1440">https://www.polestar.com/dato-assets/94392/1772095455-02-1-polestar-3-27-overview-exterior-features-d.jpg?fm=avif&#x26;only-imgix=true&#x26;fit=min&#x26;q=80&#x26;dpr=1&#x26;w=1440</a></strong></h1>
+            </div>
+          </div>
+          <div>
+            <div>
+              <h2 id="technical-innovations-and-an-aerodynamic-design-elevate-both-the-driving-and-the-interior-experience">Technical innovations and an aerodynamic design elevate both the driving and the interior experience.</h2>
+            </div>
+          </div>
+          <div>
+            <div>The front aero wing attaches the air to the bonnet, increasing aerodynamic efficiency and extending range.</div>
+            <div></div>
+          </div>
+          <div>
+            <div>The full-length panoramic roof lets more light into the cabin, creating a feeling of airy spaciousness.</div>
+            <div></div>
+          </div>
+          <div>
+            <div>The optional electrochromic film uses liquid crystals to actively reduce glare. The added double infrared-coating boosts climate control efficiency.</div>
+            <div><strong><a href="https://www.polestar.com/dato-assets/94392/1772119096-02-3-polestar-3-27-overview-exterior-features-electrochromic-d.jpg?fm=avif&#x26;only-imgix=true&#x26;fit=min&#x26;q=80&#x26;dpr=1&#x26;w=1440">https://www.polestar.com/dato-assets/94392/1772119096-02-3-polestar-3-27-overview-exterior-features-electrochromic-d.jpg?fm=avif&#x26;only-imgix=true&#x26;fit=min&#x26;q=80&#x26;dpr=1&#x26;w=1440</a></strong></div>
+          </div>
+          <div>
+            <div>The interior provides plenty of room, with a comfortable distance between seat rows and a completely flat floor</div>
+            <div><strong><a href="https://www.polestar.com/dato-assets/94392/1772119362-02-2-polestar-3-27-overview-exterior-features-no-roof-d.jpg?fm=avif&#x26;only-imgix=true&#x26;fit=min&#x26;q=80&#x26;dpr=1&#x26;w=1440">https://www.polestar.com/dato-assets/94392/1772119362-02-2-polestar-3-27-overview-exterior-features-no-roof-d.jpg?fm=avif&#x26;only-imgix=true&#x26;fit=min&#x26;q=80&#x26;dpr=1&#x26;w=1440</a></strong></div>
+          </div>
+          <div>
+            <div>The rear aero wing harmonises with the front aero wing, low roof line, and rear side aeroblades to increase downforce and reduce turbulence.</div>
+            <div></div>
+          </div>
+        </div>
+        <div class="charging">
+          <div>
+            <div>
+              <h2 id="from-10-80-in-just-22-minutes-experience-charging-up-to-350-kw-with-the-800-v-architecture-of-polestar-3more-on-performance">From 10-80% in just 22 minutes³. Experience charging up to 350 kW with the 800 V architecture of Polestar 3.<br>More on performance</h2>
+            </div>
+          </div>
+          <div>
+            <div>
+              <h2 id="vbattery-architecture-"><strong>800 V</strong><br>Battery architecture |</h2>
+            </div>
+          </div>
+          <div>
+            <div>
+              <h2 id="kwmax-dc-charging"><strong>350 kW</strong><br>Max DC charging</h2>
+            </div>
+          </div>
+        </div>
+        <div class="gallery">
+          <div>
+            <div><a href="https://www.polestar.com/dato-assets/94392/1772095786-03-1-polestar-3-27-overview-gallery-d.png?fit=min&#x26;q=80&#x26;w=1600">A white Polestar 3 driving between grey stone columns and walls.</a></div>
+          </div>
+          <div>
+            <div><a href="https://www.polestar.com/dato-assets/94392/1772100508-03-2-polestar-3-27-overview-gallery-d.png?fit=min&#x26;q=80&#x26;w=1600">A white Polestar 3 driving on a road in a foggy environment with trees and green foliage.</a></div>
+          </div>
+          <div>
+            <div><a href="https://www.polestar.com/dato-assets/94392/1772100593-03-3-polestar-3-27-overview-gallery-d.png?fit=min&#x26;q=80&#x26;w=1600">A rear view of a white Polestar 3 driving in a foggy environment with trees and green foliage.</a></div>
+          </div>
+          <div>
+            <div><a href="https://www.polestar.com/dato-assets/94392/1772100663-03-4-polestar-3-27-overview-gallery-d.png?fit=min&#x26;q=80&#x26;w=1600">A portrait view of a white Polestar 3 standing between grey stone columns and walls.</a></div>
+          </div>
+          <div>
+            <div><a href="https://www.polestar.com/dato-assets/94392/1772100728-03-5-polestar-3-27-overview-gallery-d.png?fit=min&#x26;q=80&#x26;w=1600">A rear-angled view of a white Polestar 3 driving between grey stone walls and columns.</a></div>
+          </div>
+          <div>
+            <div><a href="https://www.polestar.com/dato-assets/94392/1772100809-03-6-polestar-3-27-overview-gallery-d.png?fit=min&#x26;q=80&#x26;w=1600">View of a white Polestar 3 from behind driving on a motorway against a foggy, mountainous backdrop.</a></div>
+          </div>
+          <div>
+            <div><a href="https://www.polestar.com/dato-assets/94392/1772100885-03-7-polestar-3-27-overview-gallery-d.png?fit=min&#x26;q=80&#x26;w=1600">A side view of the back half of a white Polestar 3 driving by grey stone walls and columns.</a></div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer></footer>
+  </body>
+</html>

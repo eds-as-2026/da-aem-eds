@@ -2,29 +2,36 @@
    Gallery
    ========================================================================== */
 
+/* full-bleed: override EDS section max-width/padding */
+.gallery-container .gallery-wrapper {
+  max-width: unset;
+  padding: 0;
+}
+
+.gallery-container.section {
+  margin: 0;
+  padding: 0;
+}
+
 .gallery-carousel {
   width: 100%;
 }
 
-.gallery-track {
+.gallery-viewport {
   position: relative;
   width: 100%;
-  aspect-ratio: 4 / 3;
   overflow: hidden;
-  background: #f5f5f5;
+}
+
+.gallery-track {
+  display: flex;
+  transition: transform .4s ease;
 }
 
 .gallery-slide {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  z-index: 1;
-  transition: opacity .5s ease;
-}
-
-.gallery-slide-active {
-  opacity: 1;
-  z-index: 2;
+  flex-shrink: 0;
+  aspect-ratio: 4 / 3;
+  background: #f5f5f5;
 }
 
 .gallery-slide img {
@@ -33,6 +40,49 @@
   height: 100%;
   object-fit: cover;
 }
+
+/* ==========================================================================
+   Prev / next hover zones
+   ========================================================================== */
+
+.gallery-nav {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  width: 50%;
+  padding: 0;
+  border: none;
+  background: transparent;
+}
+
+.gallery-nav-prev {
+  left: 0;
+  justify-content: flex-start;
+  cursor:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='19' fill='white' fill-opacity='0.9' stroke='%23ddd'/%3E%3Cpath d='M23 12l-8 8 8 8' stroke='black' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+    20 20,
+    pointer;
+}
+
+.gallery-nav-next {
+  right: 0;
+  justify-content: flex-end;
+  cursor:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='19' fill='white' fill-opacity='0.9' stroke='%23ddd'/%3E%3Cpath d='M17 12l8 8-8 8' stroke='black' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+    20 20,
+    pointer;
+}
+
+.gallery-nav:disabled {
+  cursor: default;
+}
+
+/* ==========================================================================
+   Dots
+   ========================================================================== */
 
 .gallery-dots {
   display: flex;
@@ -67,7 +117,7 @@
    ========================================================================== */
 
 @media (width >= 600px) {
-  .gallery-track {
+  .gallery-slide {
     aspect-ratio: 16 / 9;
   }
 

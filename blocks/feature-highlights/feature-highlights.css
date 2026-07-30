@@ -1,0 +1,177 @@
+/* ==========================================================================
+   Feature Highlights — one tall image, captions reveal as you scroll past
+   ========================================================================== */
+
+/* full-bleed: override EDS section max-width/padding */
+.feature-highlights-container .feature-highlights-wrapper {
+  max-width: unset;
+  padding: 0;
+}
+
+.feature-highlights-container.section {
+  margin: 0;
+  padding: 0;
+}
+
+.feature-highlights-media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 0.7;
+  overflow: hidden;
+  background-color: #1e1e20;
+}
+
+.feature-highlights-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  opacity: 0;
+  transition: opacity .6s ease;
+}
+
+.feature-highlights-image-active {
+  opacity: 1;
+  z-index: 1;
+}
+
+/* ==========================================================================
+   Heading overlay — fixed, always visible
+   ========================================================================== */
+
+.feature-highlights-heading-overlay {
+  position: absolute;
+  z-index: 2;
+  top: 4%;
+  left: 6%;
+  max-width: 320px;
+}
+
+.feature-highlights-heading-overlay h2 {
+  margin: 0;
+  color: rgb(255 255 255);
+  font-family: var(--body-font-family);
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.25;
+  text-shadow: 0 1px 4px rgb(0 0 0 / 45%);
+}
+
+/* ==========================================================================
+   Captions — positioned at fixed points down the tall image, alternating
+   left/right, revealed by IntersectionObserver (see feature-highlights.js)
+   ========================================================================== */
+
+.feature-highlights-caption {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 220px;
+  color: rgb(255 255 255);
+  font-family: var(--body-font-family);
+  text-align: left;
+  text-shadow: 0 1px 4px rgb(0 0 0 / 45%);
+  opacity: 0;
+  transition: opacity .5s ease;
+}
+
+.feature-highlights-caption.is-active {
+  opacity: 1;
+}
+
+.feature-highlights-caption p {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.feature-highlights-caption-line {
+  flex: 0 0 auto;
+  width: 0;
+  height: 1px;
+  background: rgb(255 255 255 / 70%);
+  transition: width .5s ease;
+}
+
+.feature-highlights-caption.is-active .feature-highlights-caption-line {
+  width: 32px;
+}
+
+.feature-highlights-caption[data-side="right"] {
+  right: 6%;
+  text-align: right;
+
+  /* flex-direction: row-reverse; */
+}
+
+.feature-highlights-caption[data-side="left"] {
+  left: 6%;
+}
+
+/* ==========================================================================
+   Tablet (600px+)
+   ========================================================================== */
+
+@media (width >= 600px) {
+  .feature-highlights-heading-overlay h2 {
+    font-size: 26px;
+  }
+
+  .feature-highlights-caption {
+    max-width: 260px;
+  }
+
+  .feature-highlights-caption p {
+    font-size: 13px;
+  }
+
+  .feature-highlights-caption.is-active .feature-highlights-caption-line {
+    width: 48px;
+  }
+}
+
+/* ==========================================================================
+   Laptop / Desktop (900px+)
+   ========================================================================== */
+
+@media (width >= 900px) {
+  .feature-highlights-heading-overlay {
+    top: 6%;
+    left: 8%;
+    max-width: 420px;
+  }
+
+  .feature-highlights-heading-overlay h2 {
+    font-size: 32px;
+  }
+
+  .feature-highlights-caption[data-side="right"] {
+    right: 8%;
+  }
+
+  .feature-highlights-caption[data-side="left"] {
+    left: 8%;
+  }
+
+  .feature-highlights-caption {
+    max-width: 300px;
+  }
+
+  .feature-highlights-caption p {
+    font-size: 14px;
+  }
+}
+
+/* ==========================================================================
+   Large desktop / big screens (1200px+)
+   ========================================================================== */
+
+@media (width >= 1200px) {
+  .feature-highlights-heading-overlay h2 {
+    font-size: 38px;
+  }
+}

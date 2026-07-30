@@ -1,3 +1,15 @@
+import { createOptimizedPicture } from '../../scripts/aem.js';
+
+// Matches this project's CSS breakpoints (600/900/1200, see AGENTS.md), so
+// each device tier requests an image sized close to what it'll actually
+// display, instead of every screen loading the same one resolution.
+const HERO_BANNER_BREAKPOINTS = [
+  { media: '(min-width: 1200px)', width: '2400' },
+  { media: '(min-width: 900px)', width: '1800' },
+  { media: '(min-width: 600px)', width: '1200' },
+  { width: '750' },
+];
+
 /**
  * loads and decorates the hero-banner block
  * @param {Element} block The block element
@@ -39,19 +51,18 @@ export default async function decorate(block) {
   // the CTA URL), and everything else in between is either further heading
   // elements or plain paragraphs.
   //
-  // If a plain paragraph is present (besides the CTA one), it's treated as
-  // a body paragraph, and any extra heading elements become a subheading
-  // grouped tightly with the title (e.g. "Sustainability" / "Being
-  // transparent with the facts" / body copy). If there's no such paragraph,
-  // the extra heading elements are instead treated as a single description
-  // line, matching the original two-line hero pattern (e.g. "Polestar 3" /
-  // "The SUV others aspire to be...").
+  // Any extra heading elements always become a subheading grouped tightly
+  // with the title, rendered at the same large size (e.g. "Polestar 3" /
+  // "The SUV others aspire to be..." or "Sustainability" / "Being
+  // transparent with the facts"). A plain paragraph (besides the CTA one),
+  // if present, is a separate smaller body copy below that.
   let headingText = '';
   let subheadingText = '';
   let descriptionText = '';
   let bodyText = '';
   let ctaText = 'Discover';
   let ctaUrl = '#';
+  let hasCta = false;
 
   const contentRow = rows[1];
   if (contentRow) {
@@ -66,6 +77,7 @@ export default async function decorate(block) {
 
       const ctaPara = cellChildren.filter((child) => child.tagName === 'P').pop();
       if (ctaPara) {
+        hasCta = true;
         const ctaLink = ctaPara.querySelector('a');
         if (ctaLink) {
           ctaText = ctaLink.textContent.trim() || ctaText;
@@ -90,11 +102,7 @@ export default async function decorate(block) {
       });
 
       bodyText = bodyParts.join(' ');
-      if (bodyText) {
-        subheadingText = headingParts.join(' ');
-      } else {
-        descriptionText = headingParts.join(' ');
-      }
+      subheadingText = headingParts.join(' ');
     } else {
       // Fallback to previous paragraph/newline logic
       const paras = contentRow.querySelectorAll('p');
@@ -120,8 +128,17 @@ export default async function decorate(block) {
   // Some authors instead use a dedicated fourth row for the CTA link.
   const ctaRowLink = rows[3]?.querySelector('a');
   if (ctaRowLink) {
+    hasCta = true;
     ctaText = ctaRowLink.textContent.trim() || ctaText;
     ctaUrl = ctaRowLink.href;
+  }
+
+  // Apply the top hero style only for the Polestar 3 page.
+  // This keeps other hero banner blocks unchanged.
+  const isPolestar3 = window.location.pathname.toLowerCase().includes('polestar-3')
+    || headingText.toLowerCase().includes('polestar 3');
+  if (isPolestar3) {
+    block.classList.add('top');
   }
 
   // Clear the block
@@ -135,13 +152,12 @@ export default async function decorate(block) {
   const backgroundDiv = document.createElement('div');
   backgroundDiv.className = 'hero-banner-background';
 
-  // Add the image to the background
+  // Add the image to the background as a responsive picture (eager-loaded:
+  // this is the LCP-critical hero image), instead of one flat <img> that
+  // would serve the same resolution to every screen size.
   if (imageSrc) {
-    const img = document.createElement('img');
-    img.src = imageSrc;
-    img.alt = imageAlt;
-    img.loading = 'eager';
-    backgroundDiv.appendChild(img);
+    const picture = createOptimizedPicture(imageSrc, imageAlt, true, HERO_BANNER_BREAKPOINTS);
+    backgroundDiv.appendChild(picture);
   }
 
   // The CSS uses a pseudo-element on `.hero-banner` for the overlay,
@@ -184,25 +200,28 @@ export default async function decorate(block) {
     body.textContent = bodyText;
   }
 
-  // Create CTA button
-  const ctaButton = document.createElement('a');
-  ctaButton.className = 'hero-banner-cta';
-  ctaButton.href = ctaUrl;
-  ctaButton.setAttribute('aria-label', ctaText);
+  // Create CTA button - only when the author actually provided one, instead
+  // of always falling back to a "Discover" button pointing nowhere (href="#").
+  let ctaButton = null;
+  if (hasCta) {
+    ctaButton = document.createElement('a');
+    ctaButton.className = 'hero-banner-cta';
+    ctaButton.href = ctaUrl;
+    ctaButton.setAttribute('aria-label', ctaText);
 
-  // Create button text span
-  const buttonTextSpan = document.createElement('span');
-  buttonTextSpan.className = 'hero-banner-cta-text';
-  buttonTextSpan.textContent = ctaText;
+    const buttonTextSpan = document.createElement('span');
+    buttonTextSpan.className = 'hero-banner-cta-text';
+    buttonTextSpan.textContent = ctaText;
 
-  ctaButton.appendChild(buttonTextSpan);
+    ctaButton.appendChild(buttonTextSpan);
+  }
 
   // Assemble the text wrapper
   textWrapper.appendChild(heading);
   if (subheading) textWrapper.appendChild(subheading);
   if (description) textWrapper.appendChild(description);
   if (body) textWrapper.appendChild(body);
-  textWrapper.appendChild(ctaButton);
+  if (ctaButton) textWrapper.appendChild(ctaButton);
 
   // Assemble the hero banner
   heroBannerDiv.appendChild(backgroundDiv);
