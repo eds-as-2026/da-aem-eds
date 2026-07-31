@@ -29,7 +29,7 @@
   object-fit: cover;
   object-position: top;
   opacity: 0;
-  transition: opacity .6s ease;
+  transition: opacity 1.5s ease-in-out;
 }
 
 .feature-highlights-image-active {
@@ -70,13 +70,13 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  max-width: 220px;
+  max-width: 320px;
   color: rgb(255 255 255);
   font-family: var(--body-font-family);
   text-align: left;
   text-shadow: 0 1px 4px rgb(0 0 0 / 45%);
   opacity: 0;
-  transition: opacity .5s ease;
+  transition: opacity 1.2s ease-out;
 }
 
 .feature-highlights-caption.is-active {
@@ -86,6 +86,7 @@
 .feature-highlights-caption p {
   margin: 0;
   font-size: 12px;
+  font-weight: 700;
   line-height: 1.4;
 }
 
@@ -93,19 +94,16 @@
   flex: 0 0 auto;
   width: 0;
   height: 1px;
-  background: rgb(255 255 255 / 70%);
-  transition: width .5s ease;
+  background: rgb(255 255 255 / 90%);
+  transition: width 1.2s ease-out .15s;
 }
 
 .feature-highlights-caption.is-active .feature-highlights-caption-line {
-  width: 32px;
+  width: 50px;
 }
 
 .feature-highlights-caption[data-side="right"] {
   right: 6%;
-  text-align: right;
-
-  /* flex-direction: row-reverse; */
 }
 
 .feature-highlights-caption[data-side="left"] {
@@ -122,7 +120,7 @@
   }
 
   .feature-highlights-caption {
-    max-width: 260px;
+    max-width: 360px;
   }
 
   .feature-highlights-caption p {
@@ -130,7 +128,7 @@
   }
 
   .feature-highlights-caption.is-active .feature-highlights-caption-line {
-    width: 48px;
+    width: 70px;
   }
 }
 
@@ -158,11 +156,15 @@
   }
 
   .feature-highlights-caption {
-    max-width: 300px;
+    max-width: 420px;
   }
 
   .feature-highlights-caption p {
     font-size: 14px;
+  }
+
+  .feature-highlights-caption.is-active .feature-highlights-caption-line {
+    width: 110px;
   }
 }
 
@@ -173,5 +175,13 @@
 @media (width >= 1200px) {
   .feature-highlights-heading-overlay h2 {
     font-size: 38px;
+  }
+
+  .feature-highlights-caption {
+    max-width: 480px;
+  }
+
+  .feature-highlights-caption.is-active .feature-highlights-caption-line {
+    width: 160px;
   }
 }

@@ -65,26 +65,74 @@ export default function decorate(block) {
 
     // Mute/unmute toggle — the video must start muted for autoplay, but the
     // source lets users click to hear the teaser audio. Mirror that here.
-    const muteToggle = document.createElement('button');
-    muteToggle.type = 'button';
-    muteToggle.className = 'hero-video-mute is-muted';
-    muteToggle.setAttribute('aria-label', 'Unmute video');
-    muteToggle.setAttribute('aria-pressed', 'true');
-    muteToggle.addEventListener('click', () => {
-      // If the user interacts before the deferred load ran, load it now.
+    // Skip entirely for videos authored with no soundtrack (block variant
+    // "no-audio", e.g. "Hero Video (no-audio)" in the doc).
+    if (!block.classList.contains('no-audio')) {
+      const muteToggle = document.createElement('button');
+      muteToggle.type = 'button';
+      muteToggle.className = 'hero-video-mute is-muted';
+      muteToggle.setAttribute('aria-label', 'Unmute video');
+      muteToggle.setAttribute('aria-pressed', 'true');
+      muteToggle.addEventListener('click', () => {
+        // If the user interacts before the deferred load ran, load it now.
+        startVideo();
+        video.muted = !video.muted;
+        const { muted } = video;
+        muteToggle.classList.toggle('is-muted', muted);
+        muteToggle.setAttribute('aria-pressed', String(muted));
+        muteToggle.setAttribute('aria-label', muted ? 'Unmute video' : 'Mute video');
+        // Unmuting is a user gesture, so it's safe to (re)play with sound.
+        if (!muted) {
+          const p = video.play();
+          if (p && typeof p.catch === 'function') p.catch(() => {});
+        }
+      });
+      mediaRow.append(muteToggle);
+    }
+
+    // Play/pause toggle with a circular progress ring that tracks playback
+    // through the loop, redrawn on each 'timeupdate'.
+    const RING_RADIUS = 20;
+    const RING_CIRCUMFERENCE = 2 * Math.PI * RING_RADIUS;
+
+    const playToggle = document.createElement('button');
+    playToggle.type = 'button';
+    playToggle.className = 'hero-video-playtoggle is-playing';
+    playToggle.setAttribute('aria-label', 'Pause video');
+    playToggle.setAttribute('aria-pressed', 'true');
+    playToggle.innerHTML = `<svg class="hero-video-playtoggle-ring" viewBox="0 0 44 44" width="44" height="44" aria-hidden="true">
+      <circle class="hero-video-playtoggle-track" cx="22" cy="22" r="${RING_RADIUS}" />
+      <circle class="hero-video-playtoggle-progress" cx="22" cy="22" r="${RING_RADIUS}"
+        style="stroke-dasharray:${RING_CIRCUMFERENCE};stroke-dashoffset:${RING_CIRCUMFERENCE};" />
+    </svg>`;
+
+    const progressRing = playToggle.querySelector('.hero-video-playtoggle-progress');
+    video.addEventListener('timeupdate', () => {
+      if (!video.duration) return;
+      const progress = video.currentTime / video.duration;
+      progressRing.style.strokeDashoffset = `${RING_CIRCUMFERENCE * (1 - progress)}`;
+    });
+
+    playToggle.addEventListener('click', () => {
       startVideo();
-      video.muted = !video.muted;
-      const { muted } = video;
-      muteToggle.classList.toggle('is-muted', muted);
-      muteToggle.setAttribute('aria-pressed', String(muted));
-      muteToggle.setAttribute('aria-label', muted ? 'Unmute video' : 'Mute video');
-      // Unmuting is a user gesture, so it's safe to (re)play with sound.
-      if (!muted) {
+      if (video.paused) {
         const p = video.play();
         if (p && typeof p.catch === 'function') p.catch(() => {});
+      } else {
+        video.pause();
       }
     });
-    mediaRow.append(muteToggle);
+    video.addEventListener('play', () => {
+      playToggle.classList.add('is-playing');
+      playToggle.setAttribute('aria-pressed', 'true');
+      playToggle.setAttribute('aria-label', 'Pause video');
+    });
+    video.addEventListener('pause', () => {
+      playToggle.classList.remove('is-playing');
+      playToggle.setAttribute('aria-pressed', 'false');
+      playToggle.setAttribute('aria-label', 'Play video');
+    });
+    mediaRow.append(playToggle);
   } else if (picture) {
     // Static image fallback (no video source authored) - still needs the
     // positioning class the CSS relies on to render full-bleed.

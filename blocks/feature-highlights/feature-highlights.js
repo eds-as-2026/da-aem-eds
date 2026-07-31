@@ -96,9 +96,14 @@ export default function decorate(block) {
 
   block.replaceChildren(media);
 
-  const setActive = (index) => {
-    captionEls.forEach((el, i) => el.classList.toggle('is-active', i === index));
-    const activeFeatureImg = index >= 0 ? featureImgs[index] : null;
+  // up to two captions can be visible together, most-recently-entered first
+  const activeIndices = new Set();
+  const MAX_ACTIVE = 2;
+
+  const applyActiveState = () => {
+    captionEls.forEach((el, i) => el.classList.toggle('is-active', activeIndices.has(i)));
+    const latestIndex = [...activeIndices].pop();
+    const activeFeatureImg = latestIndex !== undefined ? featureImgs[latestIndex] : null;
     [baseImg, ...featureImgs].forEach((img) => {
       if (!img) return;
       img.classList.toggle('feature-highlights-image-active', img === (activeFeatureImg || baseImg));
@@ -108,12 +113,22 @@ export default function decorate(block) {
   if ('IntersectionObserver' in window) {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting) setActive(captionEls.indexOf(entry.target));
+        const index = captionEls.indexOf(entry.target);
+        if (entry.isIntersecting) {
+          activeIndices.add(index);
+          while (activeIndices.size > MAX_ACTIVE) {
+            activeIndices.delete(activeIndices.values().next().value);
+          }
+        } else {
+          activeIndices.delete(index);
+        }
       });
-    }, { rootMargin: '-45% 0px -45% 0px', threshold: 0 });
+      applyActiveState();
+    }, { rootMargin: '-35% 0px -35% 0px', threshold: 0 });
     captionEls.forEach((el) => observer.observe(el));
   } else {
     // no IntersectionObserver support: just show the first feature
-    setActive(0);
+    activeIndices.add(0);
+    applyActiveState();
   }
 }

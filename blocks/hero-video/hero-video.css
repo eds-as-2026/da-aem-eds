@@ -79,6 +79,69 @@
   mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="m23 9-6 6"/><path d="m17 9 6 6"/></svg>');
 }
 
+/* --- play/pause toggle with progress ring (bottom-right, left of mute) --- */
+.hero-video .hero-video-playtoggle {
+  position: absolute;
+  z-index: 2;
+  right: 80px;
+  bottom: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgb(0 0 0 / 30%);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.hero-video .hero-video-playtoggle:hover,
+.hero-video .hero-video-playtoggle:focus-visible {
+  background: rgb(0 0 0 / 55%);
+}
+
+/* no mute button to sit beside: take its spot instead */
+.hero-video.no-audio .hero-video-playtoggle {
+  right: 24px;
+}
+
+.hero-video-playtoggle-ring {
+  position: absolute;
+  inset: 0;
+  transform: rotate(-90deg);
+}
+
+.hero-video-playtoggle-track {
+  fill: none;
+  stroke: rgb(255 255 255 / 35%);
+  stroke-width: 2;
+}
+
+.hero-video-playtoggle-progress {
+  fill: none;
+  stroke: rgb(255 255 255);
+  stroke-width: 2;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.2s linear;
+}
+
+/* play icon (triangle) — shown while paused */
+.hero-video .hero-video-playtoggle::after {
+  content: "";
+  width: 16px;
+  height: 16px;
+  background-color: rgb(255 255 255);
+  mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="black"/></svg>') center / contain no-repeat;
+}
+
+/* pause icon (two bars) — shown while playing */
+.hero-video .hero-video-playtoggle.is-playing::after {
+  mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect x="6" y="5" width="4" height="14" fill="black"/><rect x="14" y="5" width="4" height="14" fill="black"/></svg>');
+}
+
 /* --- content overlay (row 2): title + CTA, bottom-left --- */
 .hero-video .hero-video-content {
   position: absolute;
@@ -226,5 +289,14 @@
   .hero-video .hero-video-mute {
     right: 80px;
     bottom: 68px;
+  }
+
+  .hero-video .hero-video-playtoggle {
+    right: 136px;
+    bottom: 68px;
+  }
+
+  .hero-video.no-audio .hero-video-playtoggle {
+    right: 80px;
   }
 }
