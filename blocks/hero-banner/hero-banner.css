@@ -296,12 +296,21 @@
 }
 
 .hero-banner.dark-text .hero-banner-heading {
-  color: #000;
+  overflow-wrap: anywhere;
+  font-size: 1.875rem;
+  letter-spacing: -0.075rem;
+  line-height: 2rem;
+  white-space: pre-line;
+  color: rgb(0 0 0);
 }
 
 .hero-banner.dark-text .hero-banner-subheading {
+  overflow-wrap: anywhere;
+  font-size: 1.875rem;
+  letter-spacing: -0.075rem;
+  line-height: 2rem;
+  white-space: pre-line;
   color: rgb(0 0 0 / 60%);
-  font-weight: 500;
 }
 
 /* ==========================================================================
