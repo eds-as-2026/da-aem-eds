@@ -1,12 +1,12 @@
 /* ==========================================================================
-   Hero Banner
+   Custom Hero Banner
    ========================================================================== */
 
 /* Break the block out of the default centered/padded section wrapper so the
    background image runs full-bleed edge-to-edge. Needs the extra
-   .hero-banner-container ancestor class for specificity, otherwise it loses
+   .custom-hero-banner-container ancestor class for specificity, otherwise it loses
    to the more specific `main > .section > div` rule in styles.css. */
-.hero-banner-container .hero-banner-wrapper {
+.custom-hero-banner-container .custom-hero-banner-wrapper {
   max-width: unset;
   margin: 0;
   padding: 0;
@@ -20,7 +20,7 @@
    relative to its width on narrow screens than on wide ones, which only a
    viewport-relative height (not an intrinsic image ratio or a fixed
    aspect-ratio) produces. Falls back to vh for browsers without dvh. */
-.hero-banner {
+.custom-hero-banner {
   position: relative;
   width: 100%;
   height: calc(100vh - var(--nav-height));
@@ -33,23 +33,23 @@
    Background Image
    ========================================================================== */
 
-.hero-banner-background {
+.custom-hero-banner-background {
   position: absolute;
   inset: 0;
   z-index: 1;
 }
 
-.hero-banner-background picture,
-.hero-banner-background img {
+.custom-hero-banner-background picture,
+.custom-hero-banner-background img {
   width: 100%;
   height: 100%;
 }
 
-.hero-banner-background picture {
+.custom-hero-banner-background picture {
   display: block;
 }
 
-.hero-banner-background img {
+.custom-hero-banner-background img {
   display: block;
   width: 100%;
   height: 100%;
@@ -63,7 +63,7 @@
 
 /* Mobile: text sits at the bottom of the image, so fade the overlay in
    from the bottom for contrast. */
-.hero-banner::before {
+.custom-hero-banner::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -82,10 +82,10 @@
    ========================================================================== */
 
 /* Mobile: text block anchored to the bottom, full width. */
-.hero-banner-text {
+.custom-hero-banner-text {
   position: absolute;
   z-index: 3;
-  inset: auto 20px 28px;
+  inset: 20px 28px;
   max-width: none;
 }
 
@@ -93,7 +93,7 @@
    Heading
    ========================================================================== */
 
-.hero-banner-heading {
+.custom-hero-banner-heading {
   margin: 0 0 10px;
   font-family: var(--body-font-family);
   font-size: 1.875rem;
@@ -106,7 +106,7 @@
 /* Tighter bottom margin when a subheading immediately follows, so the two
    read as one grouped title block (e.g. "Sustainability" / "Being
    transparent with the facts"). */
-.hero-banner-heading-grouped {
+.custom-hero-banner-heading-grouped {
   margin-bottom: 2px;
 }
 
@@ -116,7 +116,7 @@
 
 /* Grouped tightly under the heading, same scale, lighter color - only
    rendered when the content also has a separate body paragraph. */
-.hero-banner-subheading {
+.custom-hero-banner-subheading {
   margin: 0 0 20px;
   font-family: var(--body-font-family);
   font-size: 1.875rem;
@@ -130,7 +130,7 @@
    Description
    ========================================================================== */
 
-.hero-banner-description {
+.custom-hero-banner-description {
   margin: 0 0 20px;
   font-family: var(--body-font-family);
   font-size: 1rem;
@@ -145,7 +145,7 @@
 
 /* Separate smaller paragraph below the heading/subheading group - only
    rendered when authored with a plain paragraph. */
-.hero-banner-body {
+.custom-hero-banner-body {
   margin: 0 0 20px;
   font-family: var(--body-font-family);
   font-size: 1rem;
@@ -158,11 +158,11 @@
    CTA
    ========================================================================== */
 
-.hero-banner-actions {
+.custom-hero-banner-actions {
   margin: 0;
 }
 
-.hero-banner-cta {
+.custom-hero-banner-cta {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -188,28 +188,28 @@
   transition-property: background, box-shadow, color;
 }
 
-.hero-banner-cta-icon {
+.custom-hero-banner-cta-icon {
   width: 1em;
   height: 1em;
   margin-left: 10px;
 }
 
-.hero-banner-cta:hover {
+.custom-hero-banner-cta:hover {
   background: #0000;
 }
 
-.hero-banner-cta:hover .hero-banner-cta-icon {
-  animation: hero-banner-cta-arrow .8s ease-in-out infinite;
+.custom-hero-banner-cta:hover .custom-hero-banner-cta-icon {
+  animation: custom-hero-banner-cta-arrow .8s ease-in-out infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-banner-cta:hover .hero-banner-cta-icon {
+  .custom-hero-banner-cta:hover .custom-hero-banner-cta-icon {
     animation: none;
     transform: translateX(4px);
   }
 }
 
-@keyframes hero-banner-cta-arrow {
+@keyframes custom-hero-banner-cta-arrow {
   0%, 100% {
     transform: translateX(0);
   }
@@ -221,25 +221,26 @@
 
 /* Extra specificity needed to beat the global a:any-link / a:hover rules
    in styles.css, which otherwise win over a single-class selector. */
-.hero-banner .hero-banner-cta,
-.hero-banner .hero-banner-cta:any-link {
+.custom-hero-banner .custom-hero-banner-cta,
+.custom-hero-banner .custom-hero-banner-cta:any-link {
   color: #000;
   text-decoration: none;
 }
 
-.hero-banner .hero-banner-cta:hover {
+.custom-hero-banner .custom-hero-banner-cta:hover {
   color: #030303;
   text-decoration: none;
 }
 
 /* ==========================================================================
-   "Top" variant — author the block name as "Hero Banner (Top)" to opt in.
+   "Top" variant — author the block name as "Custom Hero Banner (Top)" to
+   opt in.
    Bold white heading anchored near the top-left instead of the default
    vertically-centered, regular-weight dark-on-light treatment. Scoped to
-   .hero-banner.top only, so every other hero-banner usage is unaffected.
+   .custom-hero-banner.top only, so every other custom-hero-banner usage is unaffected.
    ========================================================================== */
 
-.hero-banner.top::before {
+.custom-hero-banner.top::before {
   background: linear-gradient(
     180deg,
     rgb(0 0 0 / 35%) 0%,
@@ -247,19 +248,19 @@
   );
 }
 
-.hero-banner.top .hero-banner-text {
+.custom-hero-banner.top .custom-hero-banner-text {
   inset: 40px 20px auto;
 }
 
-.hero-banner.top .hero-banner-heading {
+.custom-hero-banner.top .custom-hero-banner-heading {
   color: #fff;
 }
 
-.hero-banner.top .hero-banner-subheading {
+.custom-hero-banner.top .custom-hero-banner-subheading {
   color: rgb(255 255 255 / 80%);}
 
 @media (width >= 600px) {
-  .hero-banner.top .hero-banner-text {
+  .custom-hero-banner.top .custom-hero-banner-text {
     top: 6%;
     left: 7%;
     max-width: 340px;
@@ -268,7 +269,7 @@
 }
 
 @media (width >= 900px) {
-  .hero-banner.top .hero-banner-text {
+  .custom-hero-banner.top .custom-hero-banner-text {
     left: 9%;
   }
 }
@@ -281,40 +282,40 @@
    positioning rules.
    ========================================================================== */
 
-.hero-banner.dark-text::before {
+.custom-hero-banner.dark-text::before {
   background: none;
 }
 
 /* The home page's hero photo has the car sitting right-of-center, so it
    needs an off-center crop to avoid cutting the car off on narrow/tall
    screens. .dark-text is currently unique to that page's content, so scope
-   the offset here rather than applying it to every hero-banner image -
+   the offset here rather than applying it to every custom-hero-banner image -
    other pages' photos (e.g. Polestar 3's centered rear shot) are centered
    compositions and crop correctly with the base rule's default center. */
-.hero-banner.dark-text .hero-banner-background img {
+.custom-hero-banner.dark-text .custom-hero-banner-background img {
   object-position: 70% center;
 }
 
-.hero-banner.dark-text .hero-banner-heading {
+.custom-hero-banner.dark-text .custom-hero-banner-heading {
   color: #000;
 }
 
-.hero-banner.dark-text .hero-banner-subheading {
+.custom-hero-banner.dark-text .custom-hero-banner-subheading {
   color: rgb(0 0 0 / 60%);
   font-weight: 500;
 }
 
 /* ==========================================================================
-   "Split" variant — author the block name as "Hero Banner (Split)" to opt
+   "Split" variant — author the block name as "Custom Hero Banner (Split)" to opt
    in. A wide side-by-side banner (text column on the left, image on the
    right, both vertically centered) instead of text overlaid on a
    full-bleed background image. Self-contained (own colors, own overlay
    removal) rather than composed with .dark-text/.top, so it doesn't pick
    up those modifiers' image-cropping or positioning assumptions tuned for
    different content. Only takes effect at 900px+; below that it falls
-   back to the plain default hero-banner treatment, since there's no
+   back to the plain default custom-hero-banner treatment, since there's no
    confirmed reference for how this should look on mobile/tablet yet.
-   Scoped entirely to .hero-banner.split, so no other hero-banner usage on
+   Scoped entirely to .custom-hero-banner.split, so no other custom-hero-banner usage on
    any other page is affected.
    ========================================================================== */
 
@@ -322,10 +323,10 @@
    default) all the way from mobile through tablet - not media-query-
    gated, so it overrides both the base mobile rule and the generic 600px+
    tablet rule (which otherwise recenters text differently for the plain
-   default hero-banner). Only the art-directed image should change across
+   default custom-hero-banner). Only the art-directed image should change across
    that range; the text shouldn't jump between positions before the split
    layout takes over at 900px+. */
-.hero-banner.split .hero-banner-text {
+.custom-hero-banner.split .custom-hero-banner-text {
   inset: auto 20px 16px;
   top: auto;
   left: auto;
@@ -334,20 +335,20 @@
 }
 
 @media (width >= 900px) {
-  .hero-banner.split {
+  .custom-hero-banner.split {
     height: auto;
     aspect-ratio: 2.4 / 1;
   }
 
-  .hero-banner.split::before {
+  .custom-hero-banner.split::before {
     background: none;
   }
 
-  .hero-banner.split .hero-banner-background {
+  .custom-hero-banner.split .custom-hero-banner-background {
     inset: 0 0 0 34%;
   }
 
-  .hero-banner.split .hero-banner-text {
+  .custom-hero-banner.split .custom-hero-banner-text {
     position: absolute;
     inset: 0 66% 0 0;
     z-index: 3;
@@ -361,27 +362,27 @@
     padding: 40px 48px;
   }
 
-  .hero-banner.split .hero-banner-heading {
+  .custom-hero-banner.split .custom-hero-banner-heading {
     color: #000;
   }
 
-  .hero-banner.split .hero-banner-subheading {
+  .custom-hero-banner.split .custom-hero-banner-subheading {
     color: rgb(0 0 0 / 60%);
   }
 
-  .hero-banner.split .hero-banner-description,
-  .hero-banner.split .hero-banner-body {
+  .custom-hero-banner.split .custom-hero-banner-description,
+  .custom-hero-banner.split .custom-hero-banner-body {
     color: rgb(0 0 0 / 70%);
     max-width: 480px;
   }
 
-  .hero-banner.split .hero-banner-cta {
+  .custom-hero-banner.split .custom-hero-banner-cta {
     align-self: flex-start;
   }
 }
 
 @media (width >= 1200px) {
-  .hero-banner.split .hero-banner-text {
+  .custom-hero-banner.split .custom-hero-banner-text {
     padding: 40px 80px;
   }
 }
@@ -391,7 +392,7 @@
    ========================================================================== */
 
 @media (width >= 600px) {
-  .hero-banner::before {
+  .custom-hero-banner::before {
     background: linear-gradient(
       90deg,
       rgb(255 255 255 / 75%) 0%,
@@ -401,7 +402,7 @@
     );
   }
 
-  .hero-banner-text {
+  .custom-hero-banner-text {
     inset: unset;
     top: 35%;
     left: 7%;
@@ -409,16 +410,16 @@
     max-width: 360px;
   }
 
-  .hero-banner-heading-grouped {
+  .custom-hero-banner-heading-grouped {
     margin-bottom: 2px;
   }
 
-  .hero-banner-subheading {
+  .custom-hero-banner-subheading {
     margin-bottom: 24px;
   }
 
-  .hero-banner-description,
-  .hero-banner-body {
+  .custom-hero-banner-description,
+  .custom-hero-banner-body {
     font-size: clamp(1.05rem, 1.8vw, 1.2rem);
     margin-bottom: 24px;
   }
@@ -429,13 +430,13 @@
    ========================================================================== */
 
 @media (width >= 900px) {
-  .hero-banner-text {
+  .custom-hero-banner-text {
     left: 9%;
     max-width: 420px;
   }
 
-  .hero-banner-description,
-  .hero-banner-body {
+  .custom-hero-banner-description,
+  .custom-hero-banner-body {
     font-size: clamp(1.1rem, 1.4vw, 1.375rem);
   }
 }
@@ -445,12 +446,12 @@
    ========================================================================== */
 
 @media (width >= 1200px) {
-  .hero-banner-text {
+  .custom-hero-banner-text {
     max-width: 460px;
   }
 
-  .hero-banner-description,
-  .hero-banner-body {
+  .custom-hero-banner-description,
+  .custom-hero-banner-body {
     font-size: clamp(1.2rem, 1.2vw, 1.5rem);
   }
 }

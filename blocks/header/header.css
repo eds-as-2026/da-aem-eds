@@ -2,8 +2,15 @@
 header .nav-wrapper {
   background-color: var(--background-color);
   width: 100%;
-  z-index: 2;
+  z-index: 100;
   position: fixed;
+  top: 0;
+  left: 0;
+  transition: transform .3s ease;
+}
+
+header .nav-wrapper.nav-hidden {
+  transform: translateY(-100%);
 }
 
 header nav {
@@ -19,6 +26,8 @@ header nav {
   height: var(--nav-height);
   padding: 0 24px;
   font-family: var(--body-font-family);
+  position: relative;
+  border-bottom: 1px solid rgb(0 0 0 / 10%);
 }
 
 header nav[aria-expanded='true'] {
@@ -26,15 +35,11 @@ header nav[aria-expanded='true'] {
     'hamburger brand' var(--nav-height)
     'sections sections' 1fr
     'tools tools' var(--nav-height) / auto 1fr;
-  overflow-y: auto;
-  min-height: 100dvh;
+  overflow: hidden;
+  height: 100dvh;
 }
 
 @media (width >= 900px) {
-  header .nav-wrapper {
-    position: relative;
-  }
-
   header nav {
     display: flex;
     justify-content: space-between;
@@ -44,7 +49,7 @@ header nav[aria-expanded='true'] {
   }
 
   header nav[aria-expanded='true'] {
-    min-height: 0;
+    height: var(--nav-height);
     overflow: visible;
   }
 }
@@ -56,9 +61,11 @@ header nav p {
 
 header nav a:any-link {
   color: currentcolor;
+  text-decoration: none;
 }
 
-/* hamburger */
+/* hamburger - morphs into an X via the same before/after bars, no separate
+   icon swap needed */
 header nav .nav-hamburger {
   grid-area: hamburger;
   height: 22px;
@@ -72,11 +79,9 @@ header nav .nav-hamburger button {
   border: 0;
   border-radius: 0;
   padding: 0;
-  background-color: var(--background-color);
+  background-color: transparent;
   color: inherit;
-  overflow: initial;
-  text-overflow: initial;
-  white-space: initial;
+  cursor: pointer;
 }
 
 header nav .nav-hamburger-icon,
@@ -165,24 +170,26 @@ header nav[aria-expanded='true'] .nav-sections {
   display: block;
   visibility: visible;
   align-self: start;
+  height: 100%;
+  overflow-y: auto;
+  transition: transform .3s ease;
+}
+
+/* Mobile: the main section list slides out to the left when a sub-panel
+   is showing, rather than both being visible at once. */
+header nav[aria-expanded='true'].nav-drawer-sub-open .nav-sections {
+  transform: translateX(-100%);
 }
 
 header nav .nav-sections ul {
   list-style: none;
   padding-left: 0;
   font-size: var(--body-font-size-s);
+  margin: 0;
 }
 
 header nav .nav-sections ul > li {
   font-weight: 500;
-}
-
-header nav .nav-sections ul > li > ul {
-  margin-top: 0;
-}
-
-header nav .nav-sections ul > li > ul > li {
-  font-weight: 400;
 }
 
 @media (width >= 900px) {
@@ -190,83 +197,225 @@ header nav .nav-sections ul > li > ul > li {
     display: block;
     visibility: visible;
     white-space: nowrap;
+    height: auto;
+    overflow: visible;
   }
 
-  header nav[aria-expanded='true'] .nav-sections {
-    align-self: unset;
-  }
-
-  header nav .nav-sections .nav-drop {
-    position: relative;
-    padding-right: 16px;
-    cursor: pointer;
-  }
-
-  header nav .nav-sections .nav-drop::after {
-    content: '';
-    display: inline-block;
-    position: absolute;
-    top: 0.5em;
-    right: 2px;
-    transform: rotate(135deg);
-    width: 6px;
-    height: 6px;
-    border: 2px solid currentcolor;
-    border-radius: 0 1px 0 0;
-    border-width: 2px 2px 0 0;
-  }
-
-  header nav .nav-sections .nav-drop[aria-expanded='true']::after {
-    top: unset;
-    bottom: 0.5em;
-    transform: rotate(315deg);
+  header nav[aria-expanded='true'].nav-drawer-sub-open .nav-sections {
+    transform: none;
   }
 
   header nav .nav-sections ul {
     display: flex;
     gap: 24px;
-    margin: 0;
+    align-items: center;
+    height: var(--nav-height);
+  }
+}
+
+/* nav-drop items: a direct link plus a separate chevron toggle button */
+header nav .nav-drop-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+header nav .nav-drop-row a {
+  font-size: 1.875rem;
+  padding-block: 3px 1px;
+}
+
+@media (width >= 900px) {
+  header nav .nav-drop-row a {
+    font-size: 1rem;
+  }
+}
+
+header nav .nav-drop-toggle {
+  border: 0;
+  margin: 0;
+  padding: 8px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+header nav .nav-drop-chevron-icon {
+  width: 8px;
+  height: 8px;
+  transition: transform .2s ease;
+}
+
+header nav .nav-drop-toggle[aria-expanded='true'] .nav-drop-chevron-icon {
+  transform: rotate(180deg);
+}
+
+/* ==========================================================================
+   Flyout / sub-panel
+   ========================================================================== */
+
+/* Mobile: a second full-screen layer that slides in from the right when a
+   nav-drop's toggle is tapped, instead of expanding inline. */
+header nav .nav-flyout {
+  position: fixed;
+  inset: var(--nav-height) 0 0;
+  display: grid;
+  pointer-events: none;
+  z-index: 1;
+}
+
+header nav .nav-flyout > * {
+  grid-area: 1 / 1;
+}
+
+header nav .nav-flyout-panel {
+  background: var(--background-color);
+  transform: translateX(100%);
+  transition: transform .3s ease;
+  overflow-y: auto;
+  padding: 0 24px;
+}
+
+header nav .nav-flyout.open {
+  pointer-events: auto;
+}
+
+header nav .nav-flyout-panel.active {
+  transform: translateX(0);
+}
+
+header nav .nav-flyout-panel-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 0;
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+header nav .nav-flyout-back {
+  border: 0;
+  margin: 0;
+  padding: 6px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  display: inline-flex;
+}
+
+header nav .nav-flyout-back svg {
+  width: 16px;
+  height: 16px;
+}
+
+header nav .nav-flyout-links-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+header nav .nav-flyout-links-list a {
+  display: block;
+  padding: 10px 0;
+  font-size: 1.5rem;
+}
+
+header nav .nav-flyout-image {
+  display: none;
+}
+
+@media (width >= 900px) {
+  header nav .nav-flyout {
+    position: absolute;
+    inset: 100% 0 auto;
+    z-index: 10;
+    clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+    transition: clip-path .45s cubic-bezier(.43, 0, .42, 1);
   }
 
-  header nav .nav-sections .default-content-wrapper > ul > li {
-    flex: 0 1 auto;
-    position: relative;
+  header nav .nav-flyout.open {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
   }
 
-  header nav .nav-sections .default-content-wrapper > ul > li > ul {
+  header nav .nav-flyout-panel {
+    max-width: 1264px;
+    margin: 0 auto;
+    padding: 0 32px;
+    max-height: min(26.5rem, 90vh);
+    opacity: 0;
+    pointer-events: none;
+    transform: none;
+    transition: opacity .2s ease;
+  }
+
+  header nav .nav-flyout-panel.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  header nav .nav-flyout-panel-heading {
     display: none;
-    position: relative;
   }
 
-  header nav .nav-sections .default-content-wrapper > ul > li[aria-expanded='true'] > ul {
+  header nav .nav-flyout-panel-body {
+    display: flex;
+    gap: 2rem;
+    padding: 2rem 0;
+  }
+
+  header nav .nav-flyout-links {
+    flex: 0 1 320px;
+  }
+
+  header nav .nav-flyout-links-list a {
+    font-size: 1.875rem;
+    padding: 5px 0;
+  }
+
+  header nav .nav-flyout-image {
     display: block;
-    position: absolute;
-    left: -24px;
-    width: 200px;
-    top: 150%;
-    padding: 16px;
-    background-color: var(--light-color);
-    white-space: initial;
+    flex: 1 1 auto;
+    max-width: 400px;
+    margin-left: auto;
   }
 
-  header nav .nav-sections .default-content-wrapper > ul > li > ul::before {
-    content: '';
-    position: absolute;
-    top: -8px;
-    left: 16px;
-    width: 0;
-    height: 0;
-    border-left: 8px solid transparent;
-    border-right: 8px solid transparent;
-    border-bottom: 8px solid var(--light-color);
-  }
-
-  header nav .nav-sections .default-content-wrapper > ul > li > ul > li {
-    padding: 8px 0;
+  header nav .nav-flyout-image picture,
+  header nav .nav-flyout-image img {
+    display: block;
+    width: 100%;
+    height: auto;
   }
 }
 
 /* tools */
 header nav .nav-tools {
   grid-area: tools;
+}
+
+header nav .nav-tools ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 4px;
+}
+
+header nav .nav-tools a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  color: rgb(0 0 0 / 60%);
+}
+
+header nav .nav-tools a:hover {
+  color: #000;
 }

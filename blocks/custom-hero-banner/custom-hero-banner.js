@@ -1,7 +1,7 @@
 // Matches this project's CSS breakpoints (600/900/1200, see AGENTS.md), so
 // each device tier requests an image sized close to what it'll actually
 // display, instead of every screen loading the same one resolution.
-const HERO_BANNER_BREAKPOINTS = [
+const CUSTOM_HERO_BANNER_BREAKPOINTS = [
   { media: '(min-width: 1200px)', width: '2400' },
   { media: '(min-width: 900px)', width: '1800' },
   { media: '(min-width: 600px)', width: '1200' },
@@ -13,7 +13,7 @@ const HERO_BANNER_BREAKPOINTS = [
 // screen. Only two conditional tiers plus the mobile fallback are needed
 // here, since each tier gets its own distinct image rather than the same
 // image at several resolutions.
-const HERO_BANNER_ART_DIRECTION_TIERS = [
+const CUSTOM_HERO_BANNER_ART_DIRECTION_TIERS = [
   { media: '(min-width: 900px)', width: '2400' },
   { media: '(min-width: 600px)', width: '1200' },
   { width: '750' },
@@ -123,7 +123,7 @@ function createArtDirectedPicture(images, eager) {
   const mobile = images[0];
   const tablet = images.length >= 3 ? images[1] : null;
   const desktop = images[images.length - 1];
-  const [desktopTier, tabletTier, mobileTier] = HERO_BANNER_ART_DIRECTION_TIERS;
+  const [desktopTier, tabletTier, mobileTier] = CUSTOM_HERO_BANNER_ART_DIRECTION_TIERS;
 
   const picture = document.createElement('picture');
   appendTierSources(picture, desktop.src, desktopTier.width, desktopTier.media);
@@ -151,7 +151,7 @@ function createCtaArrowIcon() {
   svg.setAttribute('viewBox', '0 0 16 16');
   svg.setAttribute('fill', 'none');
   svg.setAttribute('aria-hidden', 'true');
-  svg.classList.add('hero-banner-cta-icon');
+  svg.classList.add('custom-hero-banner-cta-icon');
 
   const path = document.createElementNS(SVG_NS, 'path');
   path.setAttribute('d', 'M8 2 6.95 3.05l4.2 4.2H2v1.5h9.15l-4.2 4.2L8 14l6-6-6-6Z');
@@ -162,12 +162,12 @@ function createCtaArrowIcon() {
 }
 
 /**
- * loads and decorates the hero-banner block
+ * loads and decorates the custom-hero-banner block
  * @param {Element} block The block element
  */
 export default async function decorate(block) {
   // Ensure the block has the root class expected by the CSS
-  block.classList.add('hero-banner');
+  block.classList.add('custom-hero-banner');
   // Expected structure:
   // Row 1: image row - either a single image (picture/img element) shown at
   //        every breakpoint, or 2-3 images for true art direction (a
@@ -180,24 +180,28 @@ export default async function decorate(block) {
 
   const rows = Array.from(block.children);
 
-  // Get image(s) - extract from picture elements first, falling back to
-  // plain links when authored as such
-  let images = [];
+  // Get image(s) - each cell in the image row is checked independently,
+  // and every <img> (or, failing that, every link) found in that cell is
+  // used - not just the first - so it doesn't matter whether the author
+  // put each image in its own cell or stacked multiple images (as real
+  // inserted images or as pasted image URLs, which only become links, not
+  // <img> elements) inside a single cell.
+  const images = [];
 
   const firstRow = rows[0];
   if (firstRow) {
-    const imgElements = Array.from(firstRow.querySelectorAll('img'));
-    if (imgElements.length) {
-      images = imgElements.map((img) => ({
-        src: img.src,
-        alt: img.alt || 'Hero banner background',
-      }));
-    } else {
-      images = Array.from(firstRow.querySelectorAll('a[href]')).map((a) => ({
-        src: a.href,
-        alt: 'Hero banner background',
-      }));
-    }
+    Array.from(firstRow.children).forEach((cell) => {
+      const cellImages = Array.from(cell.querySelectorAll('img'));
+      if (cellImages.length) {
+        cellImages.forEach((img) => {
+          images.push({ src: img.src, alt: img.alt || 'Hero banner background' });
+        });
+        return;
+      }
+      Array.from(cell.querySelectorAll('a[href]')).forEach((link) => {
+        images.push({ src: link.href, alt: 'Hero banner background' });
+      });
+    });
   }
 
   // Get heading, subheading, description, body and CTA. Authors place all of
@@ -309,11 +313,11 @@ export default async function decorate(block) {
 
   // Create the hero banner structure
   const heroBannerDiv = document.createElement('div');
-  heroBannerDiv.className = 'hero-banner-content';
+  heroBannerDiv.className = 'custom-hero-banner-content';
 
   // Create background image element wrapper
   const backgroundDiv = document.createElement('div');
-  backgroundDiv.className = 'hero-banner-background';
+  backgroundDiv.className = 'custom-hero-banner-background';
 
   // Add the image to the background as a responsive picture (eager-loaded:
   // this is the LCP-critical hero image), instead of one flat <img> that
@@ -325,29 +329,29 @@ export default async function decorate(block) {
     backgroundDiv.appendChild(picture);
   } else if (images.length === 1) {
     const [{ src, alt }] = images;
-    const picture = createResponsivePicture(src, alt, true, HERO_BANNER_BREAKPOINTS);
+    const picture = createResponsivePicture(src, alt, true, CUSTOM_HERO_BANNER_BREAKPOINTS);
     backgroundDiv.appendChild(picture);
   }
 
-  // The CSS uses a pseudo-element on `.hero-banner` for the overlay,
+  // The CSS uses a pseudo-element on `.custom-hero-banner` for the overlay,
   // so we do not create a separate overlay element here.
 
   // Create text content wrapper
   const textWrapper = document.createElement('div');
-  textWrapper.className = 'hero-banner-text';
+  textWrapper.className = 'custom-hero-banner-text';
 
   // Create heading
   const heading = document.createElement('h1');
-  heading.className = 'hero-banner-heading';
+  heading.className = 'custom-hero-banner-heading';
   heading.textContent = headingText;
 
   // Create subheading, grouped tightly with the heading (only present when
   // there's also a body paragraph)
   let subheading = null;
   if (subheadingText) {
-    heading.classList.add('hero-banner-heading-grouped');
+    heading.classList.add('custom-hero-banner-heading-grouped');
     subheading = document.createElement('p');
-    subheading.className = 'hero-banner-subheading';
+    subheading.className = 'custom-hero-banner-subheading';
     subheading.textContent = subheadingText;
   }
 
@@ -356,7 +360,7 @@ export default async function decorate(block) {
   let description = null;
   if (descriptionText) {
     description = document.createElement('p');
-    description.className = 'hero-banner-description';
+    description.className = 'custom-hero-banner-description';
     description.textContent = descriptionText;
   }
 
@@ -365,7 +369,7 @@ export default async function decorate(block) {
   let body = null;
   if (bodyText) {
     body = document.createElement('p');
-    body.className = 'hero-banner-body';
+    body.className = 'custom-hero-banner-body';
     body.textContent = bodyText;
   }
 
@@ -374,12 +378,12 @@ export default async function decorate(block) {
   let ctaButton = null;
   if (hasCta) {
     ctaButton = document.createElement('a');
-    ctaButton.className = 'hero-banner-cta';
+    ctaButton.className = 'custom-hero-banner-cta';
     ctaButton.href = ctaUrl;
     ctaButton.setAttribute('aria-label', ctaText);
 
     const buttonTextSpan = document.createElement('span');
-    buttonTextSpan.className = 'hero-banner-cta-text';
+    buttonTextSpan.className = 'custom-hero-banner-cta-text';
     buttonTextSpan.textContent = ctaText;
 
     ctaButton.appendChild(buttonTextSpan);

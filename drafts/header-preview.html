@@ -1,0 +1,99 @@
+<body>
+  <header></header>
+  <main>
+    <div>
+      <h1>Header preview</h1>
+      <p>Static preview of the decorated header markup (fragment-loaded nav can't be fetched via the local drafts server - see chat - so this hardcodes exactly what header.js produces, for CSS/layout verification only. The real, empty top header above will render behind this one).</p>
+      <p>Scroll down to see the hide-on-scroll-down / show-on-scroll-up behavior (desktop only, 900px+). Resize below 900px to see the mobile drawer variant (click the hamburger).</p>
+      <div style="height: 2000px;"></div>
+    </div>
+    <header>
+      <div class="header block" data-block-status="loaded">
+        <div class="nav-wrapper">
+          <nav id="nav" aria-expanded="false">
+            <div class="nav-hamburger">
+              <button type="button" aria-controls="nav" aria-label="Open navigation">
+                <span class="nav-hamburger-icon"></span>
+              </button>
+            </div>
+            <div class="nav-brand">
+              <p><strong><a href="/">Custom Site</a></strong></p>
+            </div>
+            <div class="nav-sections">
+              <div class="default-content-wrapper">
+                <ul>
+                  <li class="nav-drop" aria-expanded="false">
+                    <div class="nav-drop-row">
+                      <a href="/polestar-2/">Polestar 2</a>
+                      <button type="button" class="nav-drop-toggle" aria-expanded="false" aria-controls="nav-flyout-panel-0" aria-label="Polestar 2 submenu">
+                        <svg viewBox="0 0 8 8" aria-hidden="true" class="nav-drop-chevron-icon"><path d="M1.53 1.88 4 4.36l2.47-2.48.88.88L4 6.12.65 2.76l.88-.88Z" fill="currentColor"/></svg>
+                      </button>
+                    </div>
+                  </li>
+                  <li class="nav-drop" aria-expanded="false">
+                    <div class="nav-drop-row">
+                      <a href="/polestar-3/">Polestar 3</a>
+                      <button type="button" class="nav-drop-toggle" aria-expanded="false" aria-controls="nav-flyout-panel-1" aria-label="Polestar 3 submenu">
+                        <svg viewBox="0 0 8 8" aria-hidden="true" class="nav-drop-chevron-icon"><path d="M1.53 1.88 4 4.36l2.47-2.48.88.88L4 6.12.65 2.76l.88-.88Z" fill="currentColor"/></svg>
+                      </button>
+                    </div>
+                  </li>
+                  <li><a href="/charging/">Charging</a></li>
+                  <li><a href="/more/">More</a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="nav-tools">
+              <ul>
+                <li><a href="/locations/" aria-label="Find our locations">
+                  <svg viewBox="0 0 16 16" fill="none" height="20" role="presentation"><path fill-rule="evenodd" clip-rule="evenodd" d="M8 15.5s6.375-4.313 6.375-8.447C14.375 3.125 11.521.5 8 .5 4.48.5 1.625 3.125 1.625 6.969 1.625 11.187 8 15.5 8 15.5Z" fill="currentColor"/></svg>
+                </a></li>
+                <li><a href="/market/" aria-label="Choose your market">
+                  <svg viewBox="0 0 16 16" fill="none" height="20" role="presentation"><circle cx="8" cy="8" r="6" stroke="currentColor" fill="none"/></svg>
+                </a></li>
+              </ul>
+            </div>
+            <div class="nav-flyout">
+              <div class="nav-flyout-panel active" id="nav-flyout-panel-0">
+                <div class="nav-flyout-panel-heading">
+                  <button type="button" class="nav-flyout-back" aria-label="Back to menu">
+                    <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2 9.05 3.05l-4.2 4.2H14v1.5H4.85l4.2 4.2L8 14l-6-6 6-6Z" fill="currentColor"/></svg>
+                  </button>
+                  <span>Polestar 2</span>
+                </div>
+                <div class="nav-flyout-panel-body">
+                  <div class="nav-flyout-links">
+                    <ul class="nav-flyout-links-list">
+                      <li><a href="/polestar-2/">Discover Polestar 2</a></li>
+                      <li><a href="/polestar-2/performance/">Features</a></li>
+                    </ul>
+                  </div>
+                  <div class="nav-flyout-image">
+                    <picture><img src="https://www.polestar.com/dato-assets/11286/1743511706-megamenu-p2.png" alt="Polestar 2"></picture>
+                  </div>
+                </div>
+              </div>
+              <div class="nav-flyout-panel" id="nav-flyout-panel-1">
+                <div class="nav-flyout-panel-heading">
+                  <button type="button" class="nav-flyout-back" aria-label="Back to menu">
+                    <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2 9.05 3.05l-4.2 4.2H14v1.5H4.85l4.2 4.2L8 14l-6-6 6-6Z" fill="currentColor"/></svg>
+                  </button>
+                  <span>Polestar 3</span>
+                </div>
+                <div class="nav-flyout-panel-body">
+                  <div class="nav-flyout-links">
+                    <ul class="nav-flyout-links-list">
+                      <li><a href="/polestar-3/">Discover Polestar 3</a></li>
+                      <li><a href="/polestar-3/performance/">Features</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </nav>
+        </div>
+      </div>
+    </header>
+  </main>
+  <footer></footer>
+</body>
