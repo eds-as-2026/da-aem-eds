@@ -18,6 +18,7 @@
   grid-template-columns: 1fr;
   gap: 0;
   margin: 0;
+
   /* padding: 0 24px; */
   list-style: none;
 }
@@ -140,6 +141,7 @@
        min-width follows its content's intrinsic size, so cards with wider
        content can push the divider line off the true 50% center. */
     grid-template-columns: repeat(2, minmax(0, 1fr));
+
     /* padding: 0 48px; */
   }
 
