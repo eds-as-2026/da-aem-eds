@@ -2,6 +2,47 @@
    Link List
    ========================================================================== */
 
+
+ @media (min-width: 1200px){
+.link-list-wrapper{
+  /* padding-inline-start: 2rem;
+  padding-inline-end: 2rem; */
+  padding : 96px 112px !important;
+}
+}
+
+@media (min-width: 900px) and (max-width: 1200px){
+.link-list-wrapper{
+  /* padding-inline-start: 2rem;
+  padding-inline-end: 2rem; */
+  padding : 96px 64px !important;
+}
+}
+@media (min-width: 600px) and (max-width: 900px){
+.link-list block{
+  padding-top: 6rem;
+}
+.link-list-wrapper{
+  padding : 96px 48px !important;
+}
+}
+
+@media (max-width: 600px){
+  .link-list-wrapper{
+  padding : 96px 24px !important;
+}
+.link-list-item:nth-child(2) {
+  margin: 16px 0;
+}
+}
+
+.link-list block{
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+
+
+
 .link-list-list {
   margin: 0;
   padding: 0;
@@ -17,16 +58,19 @@
 }
 
 .link-list-link {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 16px 0;
-  font-family: var(--body-font-family);
-  font-size: 1.6rem;
-  font-weight: 500;
-  line-height: 1.15;
-  transition: color .25s ease;
+    line-height: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 0px;
+    font-family: var(--body-font-family);
+    font-size: 3.8rem;
+    font-weight: 500;
+    line-height: 1;
+    transition: color .25s ease;
+    letter-spacing: -0.06em;
+    /* inline-size: 100cqi; */
 }
 
 /* Extra specificity needed to beat the global a:any-link / a:hover rules
@@ -56,7 +100,15 @@
 .link-list-chevron {
   flex-shrink: 0;
   font-size: 1.4rem;
-  font-weight: 400;
+}
+
+/* Sized off the chevron's own font-size (1em tall, width auto-derived from
+   the icon's aspect ratio), so it scales with the existing per-breakpoint
+   font-size values below without duplicating explicit dimensions. */
+.link-list-chevron svg {
+  display: block;
+  width: auto;
+  height: 1em;
 }
 
 /* ==========================================================================
@@ -65,12 +117,11 @@
 
 @media (width >= 600px) {
   .link-list-link {
-    padding: 20px 0;
-    font-size: 2rem;
+    font-size: 4rem;
   }
 
   .link-list-chevron {
-    font-size: 1.75rem;
+    font-size: 1.833rem;
   }
 }
 
@@ -80,8 +131,7 @@
 
 @media (width >= 900px) {
   .link-list-link {
-    padding: 22px 0;
-    font-size: 2.75rem;
+    font-size: 4rem;
   }
 
   .link-list-chevron {
@@ -95,8 +145,8 @@
 
 @media (width >= 1200px) {
   .link-list-link {
-    padding: 24px 0;
-    font-size: 3.25rem;
+    font-size: 110px;
+    width: inherit;
   }
 
   .link-list-chevron {

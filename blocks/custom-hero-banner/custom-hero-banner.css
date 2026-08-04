@@ -6,28 +6,105 @@
    background image runs full-bleed edge-to-edge. Needs the extra
    .custom-hero-banner-container ancestor class for specificity, otherwise it loses
    to the more specific `main > .section > div` rule in styles.css. */
-.custom-hero-banner-container .custom-hero-banner-wrapper {
+/* .custom-hero-banner-container .custom-hero-banner-wrapper {
   max-width: unset;
   margin: 0;
   padding: 0;
   width: 100vw;
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
-}
+} */
+@media (min-width: 900px) {
+  custom-hero-banner-wrapper{
+    min-height: 520px;
+    min-width:620px;
+  }
+  }
+  @media (min-width: 600px) {
+    custom-hero-banner-wrapper{
+    max-height: 820px;
+  }
+  }
+  .custom-hero-banner-wrapper{
+     width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1984px;
+    scroll-margin-top: 0px;
+    position: relative;
+    pointer-events: none;
+    height: 85vh;
+    min-height: auto;
+    max-height: 720px;
+  }
+  .custom-hero-banner{
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    max-inline-size: 100%;
+    position: relative;
+    height: 100%;
+  }
 
+  .custom-hero-banner-content{
+    position: relative;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+  }
+  .custom-hero-banner-background{
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    scroll-margin-top: var(--cw-mega-menu-sub-nav-height);
+    max-width: calc(1760px + 3vw * 2);
+    /* padding-inline: calc(3vw + 3vw); */
+    position: relative;
+    height: 100%;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    z-index: 1;
+  }
+  @media (min-width: 1200px) {
+    /* .custom-hero-banner-background{
+      max-width: calc(1760px + 2rem * 2);
+      padding-inline: calc(2rem + 5rem);
+    } */
+  }
+    /* @media (min-width: 900px) {
+    .custom-hero-banner-background{
+      max-width: calc(1760px + 2rem * 2);
+        padding-inline: calc(2rem + 2rem);
+    }
+  } */
+    @media (min-width: 600px) {
+    /* .custom-hero-banner-background{
+      max-width: calc(1760px + 1.5rem * 2);
+      padding-inline: calc(1.5rem + 1.5rem);
+    } */
+  }
 /* Fills the viewport below the header at every breakpoint - a fixed
    aspect-ratio can't reproduce this since the real hero is much taller
    relative to its width on narrow screens than on wide ones, which only a
    viewport-relative height (not an intrinsic image ratio or a fixed
    aspect-ratio) produces. Falls back to vh for browsers without dvh. */
-.custom-hero-banner {
+/* .custom-hero-banner {
   position: relative;
   width: 100%;
   height: calc(100vh - var(--nav-height));
   height: calc(100dvh - var(--nav-height));
   overflow: hidden;
   background: #f5f5f5;
-}
+} */
 
 /* ==========================================================================
    Background Image
@@ -83,10 +160,15 @@
 
 /* Mobile: text block anchored to the bottom, full width. */
 .custom-hero-banner-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+    justify-content: center;
   position: absolute;
+  /* top: 30%; */
   z-index: 3;
-  inset: 20px 28px;
-  max-width: none;
+  /* inset: 20px 28px; */
+  /* max-width: none; */
 }
 
 /* ==========================================================================
@@ -124,6 +206,7 @@
   line-height: 1.1;
   letter-spacing: -.01em;
   color: #8a8a8a;
+  margin-bottom: 8px;
 }
 
 /* ==========================================================================
@@ -146,12 +229,20 @@
 /* Separate smaller paragraph below the heading/subheading group - only
    rendered when authored with a plain paragraph. */
 .custom-hero-banner-body {
-  margin: 0 0 20px;
+  /* margin: 0 0 20px;
   font-family: var(--body-font-family);
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.4;
-  color: #333;
+  color: #333; */
+  color: rgb(0, 0, 0);
+    overflow-wrap: anywhere;
+    font-size: 1rem;
+    letter-spacing: -0.01875rem;
+    line-height: 1.125rem;
+    white-space: pre-line;
+    margin: 0 0 20px 0 !important;
+    font-weight: 600;
 }
 
 /* ==========================================================================
@@ -260,17 +351,17 @@
   color: rgb(255 255 255 / 80%);}
 
 @media (width >= 600px) {
-  .custom-hero-banner.top .custom-hero-banner-text {
+  /* .custom-hero-banner.top .custom-hero-banner-text {
     top: 6%;
     left: 7%;
     max-width: 340px;
     transform: none;
-  }
+  } */
 }
 
 @media (width >= 900px) {
   .custom-hero-banner.top .custom-hero-banner-text {
-    left: 9%;
+    left: 64px;
   }
 }
 
@@ -402,24 +493,21 @@
     );
   }
 
-  .custom-hero-banner-text {
+  /* .custom-hero-banner-text {
     inset: unset;
     top: 35%;
     left: 7%;
     transform: translateY(-50%);
     max-width: 360px;
-  }
+  } */
 
   .custom-hero-banner-heading-grouped {
     margin-bottom: 2px;
   }
 
-  .custom-hero-banner-subheading {
-    margin-bottom: 24px;
-  }
+ 
 
-  .custom-hero-banner-description,
-  .custom-hero-banner-body {
+  .custom-hero-banner-description {
     font-size: clamp(1.05rem, 1.8vw, 1.2rem);
     margin-bottom: 24px;
   }
@@ -431,12 +519,10 @@
 
 @media (width >= 900px) {
   .custom-hero-banner-text {
-    left: 9%;
-    max-width: 420px;
+    left: 64px;
   }
 
-  .custom-hero-banner-description,
-  .custom-hero-banner-body {
+  .custom-hero-banner-description {
     font-size: clamp(1.1rem, 1.4vw, 1.375rem);
   }
 }
@@ -450,8 +536,56 @@
     max-width: 460px;
   }
 
-  .custom-hero-banner-description,
-  .custom-hero-banner-body {
+  .custom-hero-banner-description {
     font-size: clamp(1.2rem, 1.2vw, 1.5rem);
   }
 }
+
+.custom-hero-banner-text-parent{
+    height: 100%;
+    display: grid;
+    
+}
+.custom-hero-banner-text{
+      grid-column: span 4;
+      height:100%;
+    }
+
+  @media (max-width: 600px){
+    .custom-hero-banner-text-parent{
+    grid-gap: 1rem 3vw;
+    padding-inline: 24px;
+    grid-template-columns: repeat(4, 1fr);
+    }
+    .custom-hero-banner-text{
+      position: unset;
+    }
+  }
+  @media (min-width:600px) and (max-width:900px){
+    .custom-hero-banner-text-parent{
+      padding: 0 48px;
+      grid-template-columns: repeat(8, 1fr);
+    }
+    .custom-hero-banner-text{
+      position: unset;
+      grid-column: span 5;
+    }
+  }
+   @media (min-width:1200px){
+    .custom-hero-banner-text-parent{
+      padding: 0 112px;
+      grid-template-columns: repeat(12, 1fr);
+    }
+    .custom-hero-banner-text{
+      position: unset;
+    }
+  }
+  @media (min-width:900px) and  (max-width:1200px){
+    .custom-hero-banner-text-parent{
+      padding: 0 64px;
+      grid-template-columns: repeat(8, 1fr);
+    }
+    .custom-hero-banner-text{
+      position: unset;
+    }
+  }

@@ -336,6 +336,9 @@ export default async function decorate(block) {
   // The CSS uses a pseudo-element on `.custom-hero-banner` for the overlay,
   // so we do not create a separate overlay element here.
 
+  const textWrapperParent = document.createElement('div');
+  textWrapperParent.className = 'custom-hero-banner-text-parent';
+
   // Create text content wrapper
   const textWrapper = document.createElement('div');
   textWrapper.className = 'custom-hero-banner-text';
@@ -391,6 +394,7 @@ export default async function decorate(block) {
   }
 
   // Assemble the text wrapper
+  textWrapperParent.appendChild(textWrapper);
   textWrapper.appendChild(heading);
   if (subheading) textWrapper.appendChild(subheading);
   if (description) textWrapper.appendChild(description);
@@ -399,6 +403,6 @@ export default async function decorate(block) {
 
   // Assemble the hero banner
   heroBannerDiv.appendChild(backgroundDiv);
-  heroBannerDiv.appendChild(textWrapper);
+  heroBannerDiv.appendChild(textWrapperParent);
   block.appendChild(heroBannerDiv);
 }

@@ -6,14 +6,14 @@
    background image runs full-bleed edge-to-edge. Needs the extra
    .hero-banner-container ancestor class for specificity, otherwise it loses
    to the more specific `main > .section > div` rule in styles.css. */
-.hero-banner-container .hero-banner-wrapper {
+/* .hero-banner-container .hero-banner-wrapper {
   max-width: unset;
   margin: 0;
   padding: 0;
   width: 100vw;
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
-}
+} */
 
 /* Fills the viewport below the header at every breakpoint - a fixed
    aspect-ratio can't reproduce this since the real hero is much taller
@@ -87,6 +87,10 @@
   z-index: 3;
   inset: auto 20px 28px;
   max-width: none;
+  /* Smooths out the top-spacer jump (3rem/4rem/5rem at the 768px/960px
+     breakpoints) into a natural shift instead of an instant snap when the
+     viewport is resized across one of those widths. */
+  transition: top .3s ease;
 }
 
 /* ==========================================================================
@@ -174,7 +178,7 @@
   box-shadow: inset 0 0 0 1px rgb(0 0 0);
   color: rgb(0 0 0);
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 400;
   letter-spacing: -.0187rem;
   min-height: 1.125rem;
   max-width: 100%;
@@ -191,11 +195,12 @@
 .hero-banner-cta-icon {
   width: 1em;
   height: 1em;
-  margin-left: 10px;
+  margin-left: .375rem;
 }
 
 .hero-banner-cta:hover {
   background: #0000;
+  box-shadow: inset 0 0 0 1px rgb(153 153 153);
 }
 
 .hero-banner-cta:hover .hero-banner-cta-icon {
@@ -206,6 +211,10 @@
   .hero-banner-cta:hover .hero-banner-cta-icon {
     animation: none;
     transform: translateX(4px);
+  }
+
+  .hero-banner-text {
+    transition: none;
   }
 }
 
@@ -247,8 +256,30 @@
   );
 }
 
+/* Vertical rhythm matches the reference design's literal spacer heights
+   (3rem/4rem/5rem push-down from the top of the section). This uses the
+   reference's own 768px/960px breakpoints - not this project's usual
+   600/900 - since those are the exact widths where the real site's spacer
+   height changes; using 600/900 here would switch early/late relative to
+   the reference. */
+.hero-banner.top {
+  --hero-banner-top-spacer: 3rem;
+}
+
+@media (width >= 768px) {
+  .hero-banner.top {
+    --hero-banner-top-spacer: 4rem;
+  }
+}
+
+@media (width >= 960px) {
+  .hero-banner.top {
+    --hero-banner-top-spacer: 5rem;
+  }
+}
+
 .hero-banner.top .hero-banner-text {
-  inset: 40px 20px auto;
+  inset: var(--hero-banner-top-spacer) 20px auto;
 }
 
 .hero-banner.top .hero-banner-heading {
@@ -256,20 +287,52 @@
 }
 
 .hero-banner.top .hero-banner-subheading {
-  color: rgb(255 255 255 / 80%);}
+  color: rgb(255 255 255 / 80%);
+}
 
 @media (width >= 600px) {
   .hero-banner.top .hero-banner-text {
-    top: 6%;
-    left: 7%;
-    max-width: 340px;
+    top: var(--hero-banner-top-spacer);
+    left: 48px;
     transform: none;
+  }
+}
+
+@media (width >= 768px) {
+  .hero-banner.top .hero-banner-text {
+    /* Reference's exact grid math at this tier: an 8-column grid (1.5rem
+       gap), text spans 5 of them, container padding is 1.5rem/side up to
+       a 1760px+3rem container cap. Not a smooth curve - the column count,
+       span and padding all change at each tier's own breakpoint, so this
+       has to be computed per tier rather than approximated with clamp(). */
+    max-width: calc(5 * (min(100vw, 1808px) - 96px) / 8 - 9px);
+    /* left:64px; */
   }
 }
 
 @media (width >= 900px) {
   .hero-banner.top .hero-banner-text {
-    left: 9%;
+    /* left: 9%; */
+  }
+}
+
+@media (width >= 960px) {
+  .hero-banner.top .hero-banner-text {
+    /* 12-column grid (2rem gap) from here on, text spans only 4 of them -
+       proportionally narrower than the 5-of-8 tier just below, even
+       though the viewport is wider. Container padding is 2rem/side, capped
+       at a 1760px+4rem container. */
+    max-width: calc((min(100vw, 1824px) - 128px) / 3);
+    left:calc(2rem + 2rem);
+  }
+}
+
+@media (width >= 1248px) {
+  .hero-banner.top .hero-banner-text {
+    /* Same 12-column grid, but padding jumps to 7rem/side here, so the
+       column narrows again despite the wider viewport. */
+    max-width: calc((min(100vw, 1824px) - 288px) / 3);
+    left:calc(2rem + 5rem);
   }
 }
 
@@ -415,7 +478,11 @@
     top: 35%;
     left: 7%;
     transform: translateY(-50%);
-    max-width: 360px;
+
+    /* Fluid instead of a fixed per-breakpoint value, so the width - and
+       therefore where the heading/subheading text wraps - scales
+       continuously with the viewport instead of jumping at fixed steps. */
+    max-width: clamp(340px, 30vw, 460px);
   }
 
   .hero-banner-heading-grouped {
@@ -440,7 +507,6 @@
 @media (width >= 900px) {
   .hero-banner-text {
     left: 9%;
-    max-width: 420px;
   }
 
   .hero-banner-description,
@@ -454,10 +520,6 @@
    ========================================================================== */
 
 @media (width >= 1200px) {
-  .hero-banner-text {
-    max-width: 460px;
-  }
-
   .hero-banner-description,
   .hero-banner-body {
     font-size: clamp(1.2rem, 1.2vw, 1.5rem);

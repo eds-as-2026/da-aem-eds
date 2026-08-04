@@ -323,20 +323,24 @@ main > .section {
 }
 
 main > .section > div {
-  max-width: 1200px;
+  /* max-width: 1200px;
   margin: auto;
-  padding: 0 24px;
+  padding: 0 24px; */
+  width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1984px
 }
 
 main > .section:first-of-type {
   margin-top: 0;
 }
 
-@media (width >= 900px) {
+/* @media (width >= 900px) {
   main > .section > div {
     padding: 0 32px;
   }
-}
+} */
 
 /* section metadata */
 main .section.light,

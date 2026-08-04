@@ -4,7 +4,7 @@
 
 /* full-bleed: override EDS section max-width/padding */
 .model-cards-container .model-cards-wrapper {
-  max-width: unset;
+  /* max-width: unset; */
   padding: 0;
 }
 
@@ -36,7 +36,7 @@
 .model-cards-card-link {
   display: flex;
   flex-direction: column;
-  padding: 24px 0;
+  padding: 24px;
   background: #fff;
 }
 
@@ -67,7 +67,7 @@
 .model-cards-card-title {
   margin: 0;
   font-size: 1.875rem;
-  font-weight: 400;
+  font-weight: 500;
   line-height: 1.1;
   letter-spacing: -.01em;
 }
@@ -76,7 +76,8 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  font-size: 1rem;
+  font-size: 1.25rem;
+  font-weight: 500;
   transition: color .2s ease;
 }
 
@@ -125,8 +126,14 @@
    ========================================================================== */
 
 @media (width >= 600px) {
-  .model-cards-list {
-    /* padding: 0 32px; */
+   .model-cards-card-link {
+    max-width: 100%;
+    padding: 48px;
+    flex-direction: column;
+  }
+
+  .model-cards-card-body {
+    gap: 24px;
   }
 }
 
@@ -140,9 +147,24 @@
     /* minmax(0, 1fr), not plain 1fr - otherwise each column's implicit
        min-width follows its content's intrinsic size, so cards with wider
        content can push the divider line off the true 50% center. */
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    display: flex;
+    flex-direction: column;
 
     /* padding: 0 48px; */
+  }
+
+  .link-list-wrapper{
+    padding: 0 2rem;
+  }
+
+  .model-cards-card-link {
+    width: 100%;
+    flex-direction: row;
+    padding: 64px;
+  }
+
+  .model-cards-card {
+    width: 100%;
   }
 
   /* Only the left column draws the vertical divider, so there's a single
@@ -152,11 +174,21 @@
     box-shadow: 1px 0 0 0 rgb(0 0 0 / 30%);
   }
 
-  .model-cards-card-link {
-    max-width: 480px;
-    margin: 0 auto;
-    padding: 32px 0;
+  .model-cards-card-body{
+    width: 32.5%;
   }
+
+  .model-cards-card-image{
+    width: 67.5%;
+  }
+}
+
+/* Mobile Screen */
+@media (width >= 600px) {
+  .link-list-wrapper{
+    padding: 0 1.5rem;
+  }
+
 }
 
 /* ==========================================================================
@@ -164,11 +196,37 @@
    ========================================================================== */
 
 @media (width >= 1200px) {
-  .model-cards-list {
-    /* padding: 0 80px; */
+  .link-list-wrapper{
+    padding: 0 5rem;
   }
 
-  .model-cards-card-title {
-    font-size: 2rem;
+  .model-cards-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* The 900px+ divider uses box-shadow, which renders outside the card's
+     own box - fine when cards are stacked, but here cards sit flush
+     against each other (gap: 0), so the shadow lands in the neighboring
+     card's box and gets painted over by its opaque background. A border
+     is part of the card's own box instead, so it can't be covered. */
+  .model-cards-card:nth-child(odd) {
+    box-shadow: none;
+    border-right: 1px solid rgb(0 0 0 / 30%);
+  }
+
+  .model-cards-card-link {
+    max-width: 100%;
+    padding: 48px 112px 80px 112px;
+    flex-direction: column;
+  }
+
+  /* The 900px+ tier splits each full-width card into a text/image row
+     (32.5%/67.5%). Cards are half-width here instead, and stacked
+     internally (flex-direction: column above), so both children need to
+     go back to filling the card's full width rather than that row split. */
+  .model-cards-card-body,
+  .model-cards-card-image {
+    width: 100%;
   }
 }
