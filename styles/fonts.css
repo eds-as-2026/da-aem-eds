@@ -1,4 +1,32 @@
-/* No custom webfont files in use — "Polestar Unica" is a proprietary font not
-   available to this project, so --body-font-family/--heading-font-family
-   (see styles.css) fall through to system-installed Helvetica Neue/Helvetica/
-   Arial, matching the same stack the real site uses. */
+/* No custom webfont files are in use site-wide — "Polestar Unica" is a
+   proprietary font not available to this project, so --body-font-family/
+   --heading-font-family (see styles.css) fall through to system-installed
+   Helvetica Neue/Helvetica/Arial, matching the same stack the real site
+   uses. */
+
+/* product-showcase block only: matches the reference (mgselect.co.in),
+   which is the same MG Select brand as this project — Inter, Roboto and
+   the brand's own "Sequel" variable font are all self-hosted here. */
+@font-face {
+  font-family: "Product Showcase Inter";
+  src: url("../fonts/inter-400.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Product Showcase Roboto";
+  src: url("../fonts/roboto-400.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Product Showcase Sequel";
+  src: url("../fonts/sequel.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}

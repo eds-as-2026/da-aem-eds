@@ -1,5 +1,5 @@
 import {
-  loadHeader,
+  // loadHeader, // temporarily disabled
   loadFooter,
   decorateIcons,
   decorateSections,
@@ -162,6 +162,7 @@ export function decorateMain(main) {
 async function loadEager(doc) {
   document.documentElement.lang = 'en';
   decorateTemplateAndTheme();
+  doc.querySelector('header')?.remove(); // temporarily disabled
   const main = doc.querySelector('main');
   if (main) {
     decorateMain(main);
@@ -184,7 +185,7 @@ async function loadEager(doc) {
  * @param {Element} doc The container element
  */
 async function loadLazy(doc) {
-  loadHeader(doc.querySelector('header'));
+  // loadHeader(doc.querySelector('header')); // temporarily disabled
 
   const main = doc.querySelector('main');
   await loadSections(main);

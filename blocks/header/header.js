@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-// TODO: remove this disable once the header/nav is re-enabled (see decorate() below)
 import { getMetadata } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
 
@@ -252,10 +250,6 @@ function wireNavDrop(li, nav, index) {
  * @param {Element} block The header block element
  */
 export default async function decorate(block) {
-  // TODO: re-enable once we proceed further with the header/nav work
-  block.textContent = '';
-
-  /*
   const navMeta = getMetadata('nav');
   const navPath = navMeta ? new URL(navMeta, window.location).pathname : '/nav';
   const fragment = await loadFragment(navPath);
@@ -365,5 +359,4 @@ export default async function decorate(block) {
   block.append(navWrapper);
 
   initScrollHide(navWrapper);
-  */
 }
