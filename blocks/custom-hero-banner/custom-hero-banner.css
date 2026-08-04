@@ -6,6 +6,7 @@
    background image runs full-bleed edge-to-edge. Needs the extra
    .custom-hero-banner-container ancestor class for specificity, otherwise it loses
    to the more specific `main > .section > div` rule in styles.css. */
+
 /* .custom-hero-banner-container .custom-hero-banner-wrapper {
   max-width: unset;
   margin: 0;
@@ -14,36 +15,34 @@
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
 } */
-@media (min-width: 900px) {
+@media (width >= 900px) {
   custom-hero-banner-wrapper{
     min-height: 520px;
     min-width:620px;
   }
   }
-  @media (min-width: 600px) {
+
+  @media (width >= 600px) {
     custom-hero-banner-wrapper{
     max-height: 820px;
   }
   }
+
   .custom-hero-banner-wrapper{
      width: 100%;
     margin-left: auto;
     margin-right: auto;
     max-width: 1984px;
-    scroll-margin-top: 0px;
+    scroll-margin-top: 0;
     position: relative;
     pointer-events: none;
     height: 85vh;
     min-height: auto;
     max-height: 720px;
   }
+
   .custom-hero-banner{
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
     flex-direction: column;
     max-inline-size: 100%;
     position: relative;
@@ -52,51 +51,55 @@
 
   .custom-hero-banner-content{
     position: relative;
-    -webkit-flex: 1;
-    -ms-flex: 1;
     flex: 1;
   }
+
+  /* TEMP disabled to test against the .custom-hero-banner-background rule
+     further down (the real absolute-overlay one the JS/image relies on) -
+     this was a duplicate selector conflicting with it. Not deleted -
+     uncomment to restore if the other one turns out to be wrong instead. */
+
+  /*
   .custom-hero-banner-background{
     width: 100%;
     margin-left: auto;
     margin-right: auto;
     scroll-margin-top: var(--cw-mega-menu-sub-nav-height);
     max-width: calc(1760px + 3vw * 2);
-    /* padding-inline: calc(3vw + 3vw); */
     position: relative;
     height: 100%;
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
     flex-direction: column;
     z-index: 1;
   }
-  @media (min-width: 1200px) {
+  */
+
+  @media (width >= 1200px) {
     /* .custom-hero-banner-background{
       max-width: calc(1760px + 2rem * 2);
       padding-inline: calc(2rem + 5rem);
     } */
   }
+
     /* @media (min-width: 900px) {
     .custom-hero-banner-background{
       max-width: calc(1760px + 2rem * 2);
         padding-inline: calc(2rem + 2rem);
     }
   } */
-    @media (min-width: 600px) {
+    @media (width >= 600px) {
     /* .custom-hero-banner-background{
       max-width: calc(1760px + 1.5rem * 2);
       padding-inline: calc(1.5rem + 1.5rem);
     } */
   }
+
 /* Fills the viewport below the header at every breakpoint - a fixed
    aspect-ratio can't reproduce this since the real hero is much taller
    relative to its width on narrow screens than on wide ones, which only a
    viewport-relative height (not an intrinsic image ratio or a fixed
    aspect-ratio) produces. Falls back to vh for browsers without dvh. */
+
 /* .custom-hero-banner {
   position: relative;
   width: 100%;
@@ -158,18 +161,93 @@
    Content
    ========================================================================== */
 
-/* Mobile: text block anchored to the bottom, full width. */
+/* TEMP disabled to test the newer CSS-grid-based .custom-hero-banner-text
+   system (defined further down, alongside .custom-hero-banner-text-parent)
+   on its own - this was a duplicate selector conflicting with it, and the
+   .top/.dark-text/.split variant rules below assumed this rule's
+   `position: absolute` as their base. Not deleted - uncomment to restore
+   the old absolute-positioned layout if the grid version doesn't work. */
+
+/*
 .custom-hero-banner-text {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-    justify-content: center;
+  justify-content: center;
   position: absolute;
-  /* top: 30%; */
   z-index: 3;
-  /* inset: 20px 28px; */
-  /* max-width: none; */
 }
+*/
+
+/* Takes over the job the old .custom-hero-banner-text position: absolute
+   rule used to do - fills the same box as the background image/overlay and
+   sits above both (z-index: 3) - so the grid-column-based text sizing
+   below renders as an overlay instead of pushing normal document flow. */
+.custom-hero-banner-text-parent{
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    height: 100%;
+    display: grid;
+    align-content: center;
+    padding-block: 20px 28px;
+
+    /* .custom-hero-banner-wrapper sets pointer-events: none higher up (so
+       the decorative background doesn't intercept clicks) and nothing
+       re-enables it - re-enable it here so the heading/CTA text is
+       actually hoverable/clickable again. */
+    pointer-events: auto;
+}
+
+.custom-hero-banner-text{
+      grid-column: span 4;
+    }
+
+  @media (width <= 600px){
+    .custom-hero-banner-text-parent{
+    gap: 1rem 3vw;
+    padding-inline: 24px;
+    grid-template-columns: repeat(4, 1fr);
+    }
+
+    .custom-hero-banner-text{
+      position: unset;
+    }
+  }
+
+  @media (width >=600px) and (width <=900px){
+    .custom-hero-banner-text-parent{
+      padding: 0 48px;
+      grid-template-columns: repeat(8, 1fr);
+    }
+
+    .custom-hero-banner-text{
+      position: unset;
+      grid-column: span 5;
+    }
+  }
+
+   @media (width >=1200px){
+    .custom-hero-banner-text-parent{
+      padding: 0 112px;
+      grid-template-columns: repeat(12, 1fr);
+    }
+
+    .custom-hero-banner-text{
+      position: unset;
+    }
+  }
+
+  @media (width >=900px) and  (width <=1200px){
+    .custom-hero-banner-text-parent{
+      padding: 0 64px;
+      grid-template-columns: repeat(8, 1fr);
+    }
+
+    .custom-hero-banner-text{
+      position: unset;
+    }
+  }
 
 /* ==========================================================================
    Heading
@@ -235,14 +313,14 @@
   font-weight: 400;
   line-height: 1.4;
   color: #333; */
-  color: rgb(0, 0, 0);
+  color: rgb(0 0 0);
     overflow-wrap: anywhere;
     font-size: 1rem;
-    letter-spacing: -0.01875rem;
+    letter-spacing: -0.0187rem;
     line-height: 1.125rem;
     white-space: pre-line;
-    margin: 0 0 20px 0 !important;
-    font-weight: 600;
+    margin: 0 0 20px !important;
+    font-weight: 400;
 }
 
 /* ==========================================================================
@@ -265,7 +343,7 @@
   box-shadow: inset 0 0 0 1px rgb(0 0 0);
   color: rgb(0 0 0);
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 400;
   letter-spacing: -.0187rem;
   min-height: 1.125rem;
   max-width: 100%;
@@ -540,52 +618,3 @@
     font-size: clamp(1.2rem, 1.2vw, 1.5rem);
   }
 }
-
-.custom-hero-banner-text-parent{
-    height: 100%;
-    display: grid;
-    
-}
-.custom-hero-banner-text{
-      grid-column: span 4;
-      height:100%;
-    }
-
-  @media (max-width: 600px){
-    .custom-hero-banner-text-parent{
-    grid-gap: 1rem 3vw;
-    padding-inline: 24px;
-    grid-template-columns: repeat(4, 1fr);
-    }
-    .custom-hero-banner-text{
-      position: unset;
-    }
-  }
-  @media (min-width:600px) and (max-width:900px){
-    .custom-hero-banner-text-parent{
-      padding: 0 48px;
-      grid-template-columns: repeat(8, 1fr);
-    }
-    .custom-hero-banner-text{
-      position: unset;
-      grid-column: span 5;
-    }
-  }
-   @media (min-width:1200px){
-    .custom-hero-banner-text-parent{
-      padding: 0 112px;
-      grid-template-columns: repeat(12, 1fr);
-    }
-    .custom-hero-banner-text{
-      position: unset;
-    }
-  }
-  @media (min-width:900px) and  (max-width:1200px){
-    .custom-hero-banner-text-parent{
-      padding: 0 64px;
-      grid-template-columns: repeat(8, 1fr);
-    }
-    .custom-hero-banner-text{
-      position: unset;
-    }
-  }

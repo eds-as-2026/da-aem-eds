@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-// TODO: remove this disable once /nav content is finalized and decorate() is restored
+// TODO: remove this disable once the header/nav is re-enabled (see decorate() below)
 import { getMetadata } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
 
@@ -29,6 +29,54 @@ function createBackIcon() {
   path.setAttribute('fill', 'currentColor');
   svg.appendChild(path);
   return svg;
+}
+
+function createPinIcon() {
+  const svg = document.createElementNS(SVG_NS, 'svg');
+  svg.setAttribute('viewBox', '0 0 16 16');
+  svg.setAttribute('aria-hidden', 'true');
+  const path = document.createElementNS(SVG_NS, 'path');
+  path.setAttribute(
+    'd',
+    'M8 1c-2.76 0-5 2.24-5 5 0 3.75 5 9 5 9s5-5.25 5-9c0-2.76-2.24-5-5-5Zm0 6.75A1.75 1.75 0 1 1 8 4.25a1.75 1.75 0 0 1 0 3.5Z',
+  );
+  path.setAttribute('fill', 'currentColor');
+  svg.appendChild(path);
+  return svg;
+}
+
+function createGlobeIcon() {
+  const svg = document.createElementNS(SVG_NS, 'svg');
+  svg.setAttribute('viewBox', '0 0 16 16');
+  svg.setAttribute('aria-hidden', 'true');
+  svg.innerHTML = '<circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.2"/>'
+    + '<ellipse cx="8" cy="8" rx="2.6" ry="6.25" fill="none" stroke="currentColor" stroke-width="1.2"/>'
+    + '<line x1="1.75" y1="8" x2="14.25" y2="8" stroke="currentColor" stroke-width="1.2"/>';
+  return svg;
+}
+
+// keyword -> icon builder, matched against a tool link's own text
+const TOOL_ICONS = [
+  { test: /location/i, build: createPinIcon },
+  { test: /market|language|region/i, build: createGlobeIcon },
+];
+
+/**
+ * replaces a tools link's visible text with an icon, matched by keyword,
+ * while keeping the original text for assistive tech.
+ * @param {Element} link the tools <a> element
+ */
+function iconifyToolLink(link) {
+  const match = TOOL_ICONS.find(({ test }) => test.test(link.textContent));
+  if (!match) return;
+  const label = link.textContent.trim();
+  link.textContent = '';
+  link.setAttribute('aria-label', label);
+  link.appendChild(match.build());
+  const srText = document.createElement('span');
+  srText.className = 'nav-sr-only';
+  srText.textContent = label;
+  link.appendChild(srText);
 }
 
 /**
@@ -68,17 +116,22 @@ function closeAllPanels(nav) {
   nav.querySelectorAll('.nav-drop[aria-expanded="true"]').forEach((drop) => {
     drop.setAttribute('aria-expanded', 'false');
   });
+  nav.querySelectorAll('.nav-drop-toggle[aria-expanded="true"]').forEach((toggle) => {
+    toggle.setAttribute('aria-expanded', 'false');
+  });
   nav.querySelectorAll('.nav-flyout-panel.active').forEach((panel) => {
     panel.classList.remove('active');
   });
   const flyout = nav.querySelector('.nav-flyout');
   if (flyout) flyout.classList.remove('open');
+  nav.classList.remove('nav-drawer-sub-open');
 }
 
 /**
- * wires up one dual-target nav item: the main link navigates directly, a
- * separate chevron button opens that item's flyout panel (desktop) or
- * slides in that item's sub-panel (mobile).
+ * wires up one dual-target nav item: on mobile a chevron button opens
+ * that item's sub-panel (tap target, no hover available); on desktop the
+ * chevron is hidden and the panel opens on hover of the item itself, since
+ * that matches the flat, icon-free desktop nav.
  * @param {Element} li the top-level nav item
  * @param {Element} nav the nav element
  * @param {number} index this item's index, used to pair it with its panel
@@ -161,8 +214,35 @@ function wireNavDrop(li, nav, index) {
     nav.classList.add('nav-drawer-sub-open');
   };
 
+  // mobile: tap the chevron
   toggle.addEventListener('click', openPanel);
   backButton.addEventListener('click', closePanel);
+
+  // desktop: hover the item, with a short close delay so moving the
+  // pointer from the link down into the panel doesn't close it first
+  let closeTimer;
+  const cancelClose = () => clearTimeout(closeTimer);
+  const scheduleClose = () => {
+    cancelClose();
+    closeTimer = setTimeout(() => {
+      if (isDesktop.matches) closePanel();
+    }, 150);
+  };
+
+  li.addEventListener('mouseenter', () => {
+    if (isDesktop.matches) {
+      cancelClose();
+      openPanel();
+    }
+  });
+  li.addEventListener('mouseleave', scheduleClose);
+  panel.addEventListener('mouseenter', cancelClose);
+  panel.addEventListener('mouseleave', scheduleClose);
+
+  // keyboard: opening via focus keeps the flyout reachable without a mouse
+  link?.addEventListener('focus', () => {
+    if (isDesktop.matches) openPanel();
+  });
 
   return panel;
 }
@@ -172,7 +252,7 @@ function wireNavDrop(li, nav, index) {
  * @param {Element} block The header block element
  */
 export default async function decorate(block) {
-  // TODO: re-enable once /nav content is finalized
+  // TODO: re-enable once we proceed further with the header/nav work
   block.textContent = '';
 
   /*
@@ -199,6 +279,11 @@ export default async function decorate(block) {
     brandLink.className = '';
     brandLink.closest('.button-wrapper')?.classList.remove('button-wrapper');
   }
+
+  // tools: swap "Find our locations" / "Choose your market" style text
+  // links for icons, keeping the text for screen readers
+  const navTools = nav.querySelector('.nav-tools');
+  navTools?.querySelectorAll('a').forEach(iconifyToolLink);
 
   // build the shared flyout: one panel per nav-drop item, stacked and
   // cross-faded rather than mounted/unmounted, so switching between two

@@ -3,7 +3,7 @@
    ========================================================================== */
 
 
- @media (min-width: 1200px){
+ @media (width >= 1200px){
 .link-list-wrapper{
   /* padding-inline-start: 2rem;
   padding-inline-end: 2rem; */
@@ -11,32 +11,35 @@
 }
 }
 
-@media (min-width: 900px) and (max-width: 1200px){
+@media (width >= 900px) and (width <= 1200px){
 .link-list-wrapper{
   /* padding-inline-start: 2rem;
   padding-inline-end: 2rem; */
   padding : 96px 64px !important;
 }
 }
-@media (min-width: 600px) and (max-width: 900px){
-.link-list block{
+
+@media (width >= 600px) and (width <= 900px){
+.link-list.block{
   padding-top: 6rem;
 }
+
 .link-list-wrapper{
   padding : 96px 48px !important;
 }
 }
 
-@media (max-width: 600px){
+@media (width <= 600px){
   .link-list-wrapper{
   padding : 96px 24px !important;
 }
+
 .link-list-item:nth-child(2) {
   margin: 16px 0;
 }
 }
 
-.link-list block{
+.link-list.block{
   padding-top: 4rem;
   padding-bottom: 4rem;
 }
@@ -58,18 +61,18 @@
 }
 
 .link-list-link {
-    line-height: 1rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 16px;
-    padding: 0px;
+    padding: 0;
     font-family: var(--body-font-family);
     font-size: 3.8rem;
     font-weight: 500;
     line-height: 1;
     transition: color .25s ease;
     letter-spacing: -0.06em;
+
     /* inline-size: 100cqi; */
 }
 

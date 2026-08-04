@@ -217,7 +217,7 @@
 
   .model-cards-card-link {
     max-width: 100%;
-    padding: 48px 112px 80px 112px;
+    padding: 48px 112px 80px;
     flex-direction: column;
   }
 

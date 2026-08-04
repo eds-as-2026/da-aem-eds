@@ -6,6 +6,7 @@
    background image runs full-bleed edge-to-edge. Needs the extra
    .hero-banner-container ancestor class for specificity, otherwise it loses
    to the more specific `main > .section > div` rule in styles.css. */
+
 /* .hero-banner-container .hero-banner-wrapper {
   max-width: unset;
   margin: 0;
@@ -87,6 +88,7 @@
   z-index: 3;
   inset: auto 20px 28px;
   max-width: none;
+
   /* Smooths out the top-spacer jump (3rem/4rem/5rem at the 768px/960px
      breakpoints) into a natural shift instead of an instant snap when the
      viewport is resized across one of those widths. */
@@ -306,6 +308,7 @@
        span and padding all change at each tier's own breakpoint, so this
        has to be computed per tier rather than approximated with clamp(). */
     max-width: calc(5 * (min(100vw, 1808px) - 96px) / 8 - 9px);
+
     /* left:64px; */
   }
 }
