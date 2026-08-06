@@ -25,6 +25,7 @@
 
 html {
   text-size-adjust: 100%;
+  scroll-snap-type: y mandatory;
 }
 
 ul,
@@ -318,6 +319,12 @@ main img {
 }
 
 /* sections */
+
+main > .section {
+  scroll-snap-align: start;
+  scroll-margin-top: var(--nav-height);
+  min-height: 100dvh;
+}
 
 /* main > .section {
   margin: 40px 0;

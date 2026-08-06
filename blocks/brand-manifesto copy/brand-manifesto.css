@@ -1,0 +1,227 @@
+.brand-manifesto-container.section {
+  margin: 0;
+  padding: 0;
+}
+
+.brand-manifesto-container .brand-manifesto-wrapper {
+  max-width: none;
+  padding: 0;
+}
+
+.brand-manifesto {
+  overflow: hidden;
+  background: #fff;
+  height:100vh;
+  padding-bottom: 6.43vh;
+}
+
+@media (width >= 1024px){
+  .brand-manifesto {
+  padding-bottom: 5.96vh;
+}
+}
+
+.brand-manifesto-intro {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: clamp(12px, 1.8vw, 24px);
+  padding-top: clamp(10px, 1.5vw, 18px);
+  text-align: center;
+  min-height: min(100vh, 980px);
+  padding-bottom: clamp(16px, 2vw, 28px);
+}
+
+.brand-manifesto-eyebrow {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  color: #000;
+  text-transform: uppercase;
+}
+
+.brand-manifesto-kicker {
+  font-size: clamp(1rem, 1vw + .65rem, 1.8rem);
+  font-weight: 500;
+  letter-spacing: .04em;
+}
+
+.brand-manifesto-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.brand-manifesto-logo picture,
+.brand-manifesto-logo img {
+  display: block;
+  max-width: min(320px, 56vw);
+  height: auto;
+}
+
+.brand-manifesto-headline {
+  display: grid;
+  justify-items: center;
+  padding-top: clamp(22px, 4vw, 54px);
+}
+
+.brand-manifesto-scroll-panel {
+  width: min(100%, 72rem);
+  height: clamp(320px, 44vh, 520px);
+  overflow: hidden auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  outline: none;
+}
+
+.brand-manifesto-scroll-panel::-webkit-scrollbar {
+  display: none;
+}
+
+.brand-manifesto-scroll-stage {
+  display: grid;
+  align-content: center;
+  min-height: calc(100% + 180px);
+  padding: clamp(8px, 1vw, 16px) 0 clamp(24px, 3vw, 40px);
+}
+
+[class~="brand-manifesto__content"] {
+  position: relative;
+  width: 100%;
+  min-height: clamp(320px, 44vh, 520px);
+}
+
+[class~="brand-manifesto__heading"],
+[class~="brand-manifesto__text"] {
+  display: grid;
+  justify-items: center;
+  transition: all 1.4s cubic-bezier(.57, 0, .14, 1);
+  will-change: opacity, transform;
+}
+
+[class~="brand-manifesto__heading"] {
+  position: absolute;
+  top: 50%;
+  z-index: 1;
+  width: 90%;
+  height: fit-content;
+  padding: clamp(58px, 12vh, 110px) 0 clamp(34px, 6vh, 72px);
+  background: linear-gradient(180deg, rgb(255 255 255 / 96%) 0%, rgb(255 255 255 / 84%) 78%, rgb(255 255 255 / 0%) 100%);
+  opacity: 1;
+  transform: translate(-50%, -50%);
+  left: 50%;
+  justify-self: center;
+}
+
+[class~="brand-manifesto__heading"].slide-up {
+  opacity: 0;
+  transform: translate(-50%, -40vh);
+}
+
+[class~="brand-manifesto__text"] {
+  position: absolute;
+  inset: auto 0 0;
+  gap: clamp(2px, .8vw, 10px);
+  opacity: 0;
+  padding: clamp(12px, 2vh, 24px) 0 0;
+}
+
+.brand-manifesto-headline-copy {
+  max-width: 14ch;
+  margin: 0;
+  color: #000;
+  font-size: clamp(2.8rem, 5vw, 6.5rem);
+  font-weight: 500;
+  line-height: .95;
+  letter-spacing: -.05em;
+}
+
+[class~="brand-manifesto__intro"],
+[class~="brand-manifesto__desc"] {
+  display: grid;
+  justify-items: center;
+  gap: clamp(2px, .8vw, 10px);
+}
+
+.brand-manifesto-intro-text,
+.brand-manifesto-description-text {
+  max-width: 58rem;
+  margin: 0;
+  color: #1a1a1a;
+  font-size: clamp(.98rem, .55vw + .78rem, 1.3rem);
+  font-weight: 400;
+  line-height: 1.45;
+  letter-spacing: 0;
+}
+
+.brand-manifesto-description-text {
+  max-width: 54rem;
+}
+
+[class~="brand-manifesto__desc"] {
+  width: min(100%, 66rem);
+  padding-top: clamp(2px, .6vw, 8px);
+}
+
+[class~="gallery-wrapper"] {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(120px, 1fr);
+  gap: clamp(10px, 1.2vw, 18px);
+  padding: 0 clamp(0px, 2vw, 20px) clamp(24px, 3vw, 44px);
+  overflow: auto hidden;
+  scrollbar-width: none;
+  align-self: end;
+  width: 100%;
+}
+
+[class~="gallery-wrapper"]::-webkit-scrollbar {
+  display: none;
+}
+
+.brand-manifesto-tile {
+  align-self: end;
+  transform: translateY(var(--tile-offset, 0));
+}
+
+.brand-manifesto-tile picture,
+.brand-manifesto-tile img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.brand-manifesto-tile img {
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+@media (width >= 600px) {
+  .brand-manifesto-scroll-panel {
+    height: clamp(360px, 48vh, 580px);
+  }
+
+  [class~="brand-manifesto__content"] {
+    min-height: clamp(360px, 48vh, 580px);
+  }
+
+  [class~="gallery-wrapper"] {
+    grid-auto-columns: minmax(140px, 1fr);
+  }
+}
+
+@media (width >= 900px) {
+  [class~="brand-manifesto__heading"] {
+    padding-top: clamp(72px, 13vh, 132px);
+  }
+
+  .brand-manifesto-headline-copy {
+    max-width: 12ch;
+  }
+}
+
+@media (width >= 1200px) {
+  [class~="gallery-wrapper"] {
+    grid-auto-columns: minmax(150px, 1fr);
+  }
+}
